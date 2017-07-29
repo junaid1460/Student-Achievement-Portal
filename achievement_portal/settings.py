@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "9=idmiyevlm)p%878miy_^yda^p4rkk#(izv#1&hgqf*!k()_w"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'database.apps.DatabaseConfig'
+    'rest_framework',
+    'django_extensions',
+    'database',
+    'student'
 ]
 
 MIDDLEWARE = [
@@ -122,14 +125,17 @@ ALLOWED_HOSTS = ['*']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'client/static')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
+# Extra places for collectstatic to find static file,s.
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, 'static'),
 ]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "client/static/media")
+MEDIA_URL = '/static/media/'

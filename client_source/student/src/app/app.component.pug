@@ -1,0 +1,34 @@
+
+md-sidenav-container(class = "sidebar")
+  md-sidenav(opened = "true", mode="side")
+
+    div(class="sidebar-content")
+      
+      md-list(style = "width: 250px")
+        md-list-item
+          button(class = "side-button",md-button)
+            md-icon insert_drive_file
+            span(space) Documents
+        md-list-item 
+          button(class = "side-button",md-button, (click)="openHelpDialog()")
+            md-icon help
+            span(space) Help
+        
+  md-toolbar
+    span Certification portal
+  div
+    md-list
+      h3(md-subheader) Files
+      md-list-item(*ngFor="let file of documents")
+        md-icon(md-list-icon) insert_drive_file
+        div(style="width:100%")
+          h4(md-line) {{file.name}}
+          p(md-line) march 21, 17
+        div(style="display:flex")
+          button(md-icon-button)
+            md-icon(md-list-icon,sty) file_download
+          button(md-icon-button, (click) = "openDeleteDialog()")
+            md-icon(md-list-icon) delete
+  div(style="height:100px")
+button(md-fab, class="float-fab", (click) = "openUploadDialog()")
+  md-icon file_upload

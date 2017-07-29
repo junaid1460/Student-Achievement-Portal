@@ -1,0 +1,26 @@
+
+<h2 md-dialog-title>Upload new Document?</h2>
+<md-dialog-content>
+  <md-list>
+    <md-list-item>
+      <md-input-container style="width:100%;">
+        <input mdInput placeholder="Title">
+      </md-input-container>
+    </md-list-item>
+    <md-list-item>
+      <input type="file" style="width:100%;">
+    </md-list-item>
+    <md-list-item>
+      <md-select placeholder="Year">
+        <md-option [value]="1">1st Year</md-option>
+        <md-option [value]="2">2nd Year</md-option>
+        <md-option [value]="3">3rd Year</md-option>
+        <md-option [value]="4">4th Year</md-option>
+      </md-select>
+    </md-list-item>
+  </md-list>
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-button md-dialog-close>Cancel</button>
+  <button md-button [md-dialog-close]="true">Upload</button>
+</md-dialog-actions>

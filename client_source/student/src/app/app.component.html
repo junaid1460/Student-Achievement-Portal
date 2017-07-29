@@ -1,0 +1,44 @@
+
+<md-sidenav-container class="sidebar">
+  <md-sidenav opened="true" mode="side">
+    <div class="sidebar-content">
+      <md-list style="width: 250px;">
+        <md-list-item>
+          <button class="side-button" md-button>
+            <md-icon>insert_drive_file</md-icon><span space>Documents</span>
+          </button>
+        </md-list-item>
+        <md-list-item> 
+          <button class="side-button" md-button (click)="openHelpDialog()">
+            <md-icon>help</md-icon><span space>Help</span>
+          </button>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-sidenav>
+  <md-toolbar><span>Certification portal</span></md-toolbar>
+  <div>
+    <md-list>
+      <h3 md-subheader>Files</h3>
+      <md-list-item *ngFor="let file of documents">
+        <md-icon md-list-icon>insert_drive_file</md-icon>
+        <div style="width:100%;">
+          <h4 md-line>{{file.name}}</h4>
+          <p md-line>march 21, 17</p>
+        </div>
+        <div style="display:flex;">
+          <button md-icon-button>
+            <md-icon md-list-icon sty>file_download</md-icon>
+          </button>
+          <button md-icon-button (click)="openDeleteDialog()">
+            <md-icon md-list-icon>delete</md-icon>
+          </button>
+        </div>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div style="height:100px;"></div>
+</md-sidenav-container>
+<button class="float-fab" md-fab (click)="openUploadDialog()">
+  <md-icon>file_upload</md-icon>
+</button>

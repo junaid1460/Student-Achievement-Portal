@@ -1,0 +1,29 @@
+.sidebar{
+    height: 100vh;
+    
+}
+.sidebar-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height:100%;
+    background: #3F51B5
+}
+.sidebar-content *{
+    color: white
+}
+.side-button{
+        width: 100%;
+    text-align: left;
+    height: 100%;
+}
+span[space]{
+    margin-left: 10px
+}
+.float-fab{
+    position: fixed;
+    margin: 30px;
+    right: 0;
+    bottom: 0;
+    background: #3f51b5
+}

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from database.models import Extended
-
+import defaults
 
 def home(request):
     print("hello")
@@ -18,18 +18,18 @@ def home(request):
         #send template for faculty or student
         type = request.user.extended.type
         if type == 'F':
-            return render(request, 'faculty.html', {})
+            return render(request, defaults.faculty_template, {})
         else:
-            return render(request, 'student.html', {})
+            return render(request, defaults.student_template, {})
 def log_out(req):
     try:
         logout(req)
     except object:
         pass
-    return HttpResponse("hello")
+    return redirect('/')
 
 def home_get(req):
-    return render(req, 'index.html', {})
+    return render(req, defaults.unauthenticated_template , {})
     
 
 def home_post(req):
@@ -39,7 +39,7 @@ def home_post(req):
     if user is None:
         print("user not found")
         #send some error message
-        return render(req, 'index.html', {'error_message' : 'Username or Password did not match'})
+        return render(req, defaults.unauthenticated_template, {'error_message' : 'Username or Password did not match'})
     else:
         login(req,user)
         return redirect('/')

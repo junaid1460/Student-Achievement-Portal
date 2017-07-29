@@ -7,8 +7,11 @@ class Extended(models.Model):
     type = models.CharField(max_length=100)
 
 class Document(models.Model):
-    _document_of = models.ForeignKey(Extended)
-    _file = models.CharField(max_length = 500)
+    _user = models.ForeignKey(Extended)
+    _file = models.FileField()
+    _title = models.CharField(max_length = 1000, default = '')
+    _year = models.IntegerField(default=0)
+    _created_at = models.DateTimeField(auto_now_add=True)
 
 class VerifiedDoc(models.Model):
     _verified_by = models.ForeignKey(Extended)
