@@ -2,7 +2,7 @@
 <md-sidenav-container class="sidebar">
   <md-sidenav opened="true" mode="side">
     <div class="sidebar-content">
-      <md-list style="width: 250px;">
+      <md-list style="width: 320px;">
         <md-list-item>
           <button class="side-button" md-button>
             <md-icon>insert_drive_file</md-icon><span space>Documents</span>
@@ -14,31 +14,65 @@
           </button>
         </md-list-item>
       </md-list>
+      <md-list>
+        <md-list-item style="display:flex;flex-direction:row-reverse;">
+          <md-chip-list>
+            <md-chip style="color: white;background: #586bd8;">me</md-chip>
+            <md-chip style="color: white;background: #586bd8;"><a href="https://github.com/junaid1460" target="_blank">GitHub</a></md-chip>
+            <md-chip style="color: white;background: #586bd8;"><a href="https://plus.google.com/u/0/102774614327026132791" target="_blank">Google+</a></md-chip>
+          </md-chip-list>
+        </md-list-item>
+      </md-list>
     </div>
   </md-sidenav>
-  <md-toolbar><span>Certification portal</span></md-toolbar>
+  <md-toolbar>
+    <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification portal</span>
+      <div><a md-raised-button style="background:#e8e8e8;" href="/api/student/certificate" target="_blank"> 
+          <md-icon>file_download</md-icon><span> Certificate</span></a>
+        <button md-raised-button style="background:#e8e8e8;" (click)="logout()">logout</button>
+      </div>
+    </div>
+  </md-toolbar>
   <div>
     <md-list>
       <h3 md-subheader>Files</h3>
-      <md-list-item *ngFor="let file of documents">
+      <md-list-item class="doc" *ngFor="let file of documents">
+        <input type="hidden" value="{{file.id}}">
         <md-icon md-list-icon>insert_drive_file</md-icon>
         <div style="width:100%;">
-          <h4 md-line>{{file.name}}</h4>
-          <p md-line>march 21, 17</p>
+          <h4 md-line>{{file._title}}</h4>
+          <p md-line>{{file._created_at}}</p>
         </div>
-        <div style="display:flex;">
-          <button md-icon-button>
-            <md-icon md-list-icon sty>file_download</md-icon>
-          </button>
-          <button md-icon-button (click)="openDeleteDialog()">
+        <div style="display:flex;align-items:center;">
+          <md-chip-list style="margin:0 10px 0 0 ;">
+            <ng-template [ngIf]="!file._verified == true">
+              <md-chip>Unverified</md-chip>
+            </ng-template>
+            <ng-template [ngIf]="file._verified == true">
+              <md-chip style="background:#4CAF50;color:white;">Verified</md-chip>
+            </ng-template>
+          </md-chip-list><a md-icon-button href="{{file._file}}" target="_blank">
+            <md-icon md-list-icon sty>file_download</md-icon></a>
+          <button md-icon-button (click)="openDeleteDialog(file.id)">
             <md-icon md-list-icon>delete</md-icon>
           </button>
+        </div>
+      </md-list-item>
+      <md-list-item *ngIf="documents.length == 0">
+        <div style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;">
+          <h1 style="width:100%;text-align:center;">Nothing to show</h1>
+          <p>upload some documents</p>
         </div>
       </md-list-item>
     </md-list>
   </div>
   <div style="height:100px;"></div>
 </md-sidenav-container>
-<button class="float-fab" md-fab (click)="openUploadDialog()">
-  <md-icon>file_upload</md-icon>
-</button>
+<div class="float-fab">
+  <button md-fab (click)="refresh()">
+    <md-icon>refresh</md-icon>
+  </button>
+  <button md-fab (click)="openUploadDialog()">
+    <md-icon>file_upload</md-icon>
+  </button>
+</div>

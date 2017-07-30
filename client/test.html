@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <style>
+            .login-div{
+                width: 400px;
+                height:200px;
+                background: white;
+            }
+            body{
+                display: flex;
+                align-content: center;
+                align-items: center;
+                justify-content: center;
+                background: gray;
+            }
+            .fields{
+                display: flex;
+                width:100%;
+                justify-content: center;
+                align-items: center;
+                padding-top: 30px;
+            }
+            .text-field{
+                padding: 5px;
+                font-size: 14px;
+            }
+            
+            </style>
+    </head>
+    <body>
+        <form method = "POST" >
+        <div class = "login-div">
+            {% csrf_token %}
+            <div class="fields">
+                <input class="text-field" type = "text" name = "id"/>
+            </div>
+         
+            <div class="fields">
+                <input class="submit-button" value="Login" type = "submit" name = "login" />
+            </div>
+        </div>
+        </form>
+    </body>
+
+</html>

@@ -11,7 +11,11 @@ class Document(models.Model):
     _file = models.FileField()
     _title = models.CharField(max_length = 1000, default = '')
     _year = models.IntegerField(default=0)
+    _place = models.CharField(max_length = 400, default="")
+    _result = models.CharField(max_length = 100, default ="")
     _created_at = models.DateTimeField(auto_now_add=True)
+    _verified = models.BooleanField(default= False)
+    _avail_for_verification = models.BooleanField(default= False)
 
 class VerifiedDoc(models.Model):
     _verified_by = models.ForeignKey(Extended)

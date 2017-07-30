@@ -4,7 +4,7 @@ md-sidenav-container(class = "sidebar")
 
     div(class="sidebar-content")
       
-      md-list(style = "width: 250px")
+      md-list(style = "width: 320px")
         md-list-item
           button(class = "side-button",md-button)
             md-icon insert_drive_file
@@ -13,22 +13,53 @@ md-sidenav-container(class = "sidebar")
           button(class = "side-button",md-button, (click)="openHelpDialog()")
             md-icon help
             span(space) Help
+      md-list
+        md-list-item(style="display:flex;flex-direction:row-reverse;")
+          md-chip-list
+            md-chip(style="color: white;background: #586bd8;") me
+            md-chip(style="color: white;background: #586bd8;")
+              a(href="https://github.com/junaid1460", target="_blank") GitHub
+            md-chip(style="color: white;background: #586bd8;")
+              a(href="https://plus.google.com/u/0/102774614327026132791", target="_blank") Google+
         
   md-toolbar
-    span Certification portal
+    div(style="width:100%;display:flex;justify-content:space-between")
+      span Certification portal
+      div
+        a(md-raised-button,style="background:#e8e8e8",href="/api/student/certificate", target="_blank") 
+          md-icon file_download
+          span  Certificate
+        button(md-raised-button,style="background:#e8e8e8",(click)="logout()") logout
   div
     md-list
       h3(md-subheader) Files
-      md-list-item(*ngFor="let file of documents")
+      md-list-item(*ngFor="let file of documents",class="doc")
+        input(type="hidden",value="{{file.id}}",)
         md-icon(md-list-icon) insert_drive_file
         div(style="width:100%")
-          h4(md-line) {{file.name}}
-          p(md-line) march 21, 17
-        div(style="display:flex")
-          button(md-icon-button)
+          h4(md-line) {{file._title}}
+          p(md-line) {{file._created_at}}
+        
+        div(style="display:flex;align-items:center")
+          md-chip-list(style="margin:0 10px 0 0 ")
+            ng-template([ngIf]="!file._verified == true")
+              md-chip Unverified
+            ng-template([ngIf]="file._verified == true")
+              md-chip(style="background:#4CAF50;color:white") Verified
+          
+            
+          a(md-icon-button, href="{{file._file}}", target="_blank")
             md-icon(md-list-icon,sty) file_download
-          button(md-icon-button, (click) = "openDeleteDialog()")
+          button(md-icon-button, (click) = "openDeleteDialog(file.id)")
             md-icon(md-list-icon) delete
+      md-list-item(*ngIf="documents.length == 0")
+        div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
+          h1(style="width:100%;text-align:center") Nothing to show
+          p() upload some documents
+    
   div(style="height:100px")
-button(md-fab, class="float-fab", (click) = "openUploadDialog()")
-  md-icon file_upload
+div( class="float-fab",)
+  button(md-fab,(click) = "refresh()")
+    md-icon refresh
+  button(md-fab, (click) = "openUploadDialog()")
+    md-icon file_upload
