@@ -1,5 +1,29 @@
 
 md-sidenav-container(class = "sidebar")
+  md-sidenav(#infonavbar,#inf,style="width:350px;height:auto;background:white;color:black", mode="over", align="end")
+    div(class="", *ngIf="navinfo!=null")
+      md-list(class="navlist")
+        h3(md-subheader) Information
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") title
+          h4(md-line) {{navinfo._title}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Status
+          h4(*ngIf="!navinfo._verified == true",md-line) Waiting to get verified
+          h4(*ngIf="navinfo._verified == true", md-line) Verified
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
+          h4(md-line) {{ getDate(navinfo._created_at)}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
+          h4(md-line) {{navinfo._year}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Domain
+          h4(md-line) {{navinfo._domain}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Category
+          h4(md-line) {{navinfo._category}}
+       
   md-sidenav(opened = "true", mode="side")
 
     div(class="sidebar-content")
@@ -24,7 +48,7 @@ md-sidenav-container(class = "sidebar")
         
   md-toolbar
     div(style="width:100%;display:flex;justify-content:space-between")
-      span Certification portal
+      span Certification portal 
       div
         a(md-raised-button,style="background:#e8e8e8",href="/api/student/certificate", target="_blank") 
           md-icon file_download
@@ -56,13 +80,16 @@ md-sidenav-container(class = "sidebar")
             md-icon(md-list-icon,sty) open_in_new
           button([disabled]="file._verified",md-icon-button, (click) = "openDeleteDialog([file.id])")
             md-icon(md-list-icon) delete
+          button(md-icon-button, (click)="showInfo(file)")
+            md-icon(md-list-icon) info
       md-list-item(*ngIf="documents.length == 0")
         div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
           h1(style="width:100%;text-align:center") Nothing to show
           p() upload some documents
+      div(style="height:100px")
     
-  div(style="height:100px")
-div( class="float-fab",)
+  //- div(style="height:100px")
+div( class="float-fab",*ngIf="!inf.opened")
   button(md-fab, *ngIf="delete_button", (click)="delete_selected()")
     md-icon delete
   button(md-fab,(click) = "refresh()")

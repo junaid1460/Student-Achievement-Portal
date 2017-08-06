@@ -2,24 +2,35 @@
 <md-sidenav-container style="height:100vh;">
   <md-sidenav class="sidenav" opened="true" mode="side">
     <md-nav-list class="stdlist">
-      <h4 md-subheader>Students</h4>
-      <md-list-item *ngFor="let student of students" (click)="getDox(student.id)">
+      <h4 md-subheader style="margin-bottom:20px;">Students<span style="margin:0 0 0 10px;">|</span>
+        <button md-button (click)="refreshStudents()">refresh
+          <md-icon>refresh</md-icon>
+        </button><span style="margin:0 0 0 4px;">|</span>
+        <button md-button (click)="logout()">logout
+          <md-icon>exit_to_app</md-icon>
+        </button>
+      </h4>
+      <md-list-item *ngFor="let student of students" (click)="setStudent(student)">
         <md-icon style="font-size:25pt;margin-right:20px;">account_circle</md-icon>
         <div style="width:100%;">
           <h4 md-line>{{student.username}}</h4>
-          <p md-line>{{first_name}} {{last_name}}</p>
+          <p md-line>{{student.first_name}} {{student.last_name}}</p>
         </div>
       </md-list-item>
     </md-nav-list>
   </md-sidenav>
   <md-toolbar>
     <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification Verification</span>
-      <div>
-        <button md-raised-button style="background:#e8e8e8;" (click)="logout()">logout</button>
-      </div>
+      <div></div>
     </div>
   </md-toolbar>
-  <md-list>
+  <md-card *ngIf="c_stud != null" style="margin:12px;">
+    <md-card-header>
+      <md-card-title>{{c_stud.username}}</md-card-title>
+      <md-card-subtitle>{{c_stud.first_name}} {{c_stud.last_name}}</md-card-subtitle>
+    </md-card-header>
+  </md-card>
+  <md-list class="dc">
     <h3 md-subheader>Files</h3>
     <md-list-item class="doc" *ngFor="let file of documents">
       <md-checkbox style="margin-right:10px;" (change)="check($event, file.id)"></md-checkbox>
@@ -30,14 +41,14 @@
       <div style="display:flex;align-items:center;">
         <md-chip-list style="margin:0 10px 0 0 ;">
           <ng-template [ngIf]="!file._verified == true">
-            <md-chip>Unverified</md-chip>
+            <md-chip style="background:#f44336;color:white;">Unverified</md-chip>
           </ng-template>
           <ng-template [ngIf]="file._verified == true">
             <md-chip style="background:#4CAF50;color:white;">Verified</md-chip>
           </ng-template>
-        </md-chip-list><a md-mini-fab href="{{file._file}}" target="_blank" style="margin-right:10px;">
+        </md-chip-list><a md-icon-button href="{{file._file}}" mdTooltip="Open" target="_blank" style="margin-right:10px;">
           <md-icon md-icon>open_in_new</md-icon></a>
-        <button md-mini-fab (click)="verify(file.id)">
+        <button md-icon-button (click)="verify(file.id)" mdTooltip="Verify">
           <md-icon md-icon>check_circle</md-icon>
         </button>
       </div>
@@ -48,13 +59,17 @@
         <p>upload some documents</p>
       </div>
     </md-list-item>
+    <div style="height:100px;"></div>
   </md-list>
-  <div style="position:fixed;bottom:0;right:0;margin:30px;">
-    <button md-fab *ngIf="verify_button" (click)="confirm_verify(checked)">
-      <md-icon md-icon>done</md-icon>
-    </button>
-    <button md-fab (click)="refresh()">
-      <md-icon md-icon>refresh</md-icon>
-    </button>
-  </div>
 </md-sidenav-container>
+<div style="position:fixed;bottom:0;right:0;margin:30px;">
+  <button class="primary pback" md-fab *ngIf="verify_button" (click)="confirm_verify(checked)" mdTooltip="Verify" mdTooltipPosition="above">
+    <md-icon md-icon>done</md-icon>
+  </button>
+  <button class="primary pback" *ngIf="documents.length &gt; 0" md-fab (click)="refresh()" mdTooltip="Refresh" mdTooltipPosition="above">
+    <md-icon md-icon>refresh</md-icon>
+  </button>
+  <button class="primary pback" md-fab (click)="logout()" mdTooltip="Logout" mdTooltipPosition="above"> 
+    <md-icon>exit_to_app</md-icon>
+  </button>
+</div>

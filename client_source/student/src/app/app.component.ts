@@ -1,5 +1,5 @@
 import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
-import {MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA} from '@angular/material'
+import {MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA, MdSidenav} from '@angular/material'
 import {StudentService} from './app.service'
 @Component({
   selector: 'app-root',
@@ -9,6 +9,7 @@ import {StudentService} from './app.service'
 })
 export class AppComponent {
   refreshing:boolean  = false;
+  @ViewChild('infonavbar') infonav:MdSidenav;
   refresh(){
     if(!this.refreshing){
       this.snack.open('Refreshing page! wait for a while','okay', {duration: 2000})
@@ -86,6 +87,13 @@ export class AppComponent {
     }else{
       this.delete_button = false
     }
+  }
+
+  navinfo = null
+  showInfo(file){
+    this.navinfo = file;
+    this.infonav.open()
+    console.log(file  )
   }
 }
 
@@ -171,6 +179,7 @@ export class UploadDialog {
       this.uploading = false
     })
   }
+
 }
 
 

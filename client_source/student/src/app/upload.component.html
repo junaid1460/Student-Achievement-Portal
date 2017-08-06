@@ -20,18 +20,19 @@
       </md-list-item>
       <md-list-item>
         <md-select placeholder="Domain" [(ngModel)]="_domain" [formControl]="drequired">
-          <md-option [value]="1">Local</md-option>
-          <md-option [value]="2">Natioal</md-option>
-          <md-option [value]="3">International</md-option>
+          <md-option value="Local">Local</md-option>
+          <md-option value="National">National</md-option>
+          <md-option value="International">International</md-option>
         </md-select><br>
         <md-error *ngIf="drequired.hasError('required')" style="padding-left:10px;">  Select domain please</md-error>
       </md-list-item>
       <md-list-item>
         <md-select placeholder="Category" [(ngModel)]="_cat" [formControl]="crequired">
-          <md-option [value]="1">Academic</md-option>
-          <md-option [value]="2">Cultural</md-option>
-          <md-option [value]="2">Technical</md-option>
-          <md-option [value]="2">Sport &amp; other </md-option>
+          <md-option value="Academic">Academic</md-option>
+          <md-option value="Cultural">Cultural</md-option>
+          <md-option value="Technical">Technical</md-option>
+          <md-option value="Sports">Sport</md-option>
+          <md-option value="Other">Other</md-option>
         </md-select><br>
         <md-error *ngIf="crequired.hasError('required')" style="padding-left:10px;">  Select Category please</md-error>
       </md-list-item>
@@ -50,12 +51,12 @@
           <md-option [value]="3">3rd Year</md-option>
           <md-option [value]="4">4th Year</md-option>
         </md-select><br>
-        <md-error *ngIf="yrequired.hasError('required')" style="padding-left:10px;">  Select year of doc</md-error>
+        <md-error *ngIf="yrequired.hasError('required')" style="padding-left:10px;">Select Academic year </md-error>
       </md-list-item>
     </md-list>
   </md-dialog-content>
   <md-dialog-actions>
-    <button md-button md-dialog-close>Cancel</button>
+    <button md-button [md-dialog-close]="false">Cancel</button>
     <button md-button (click)="upload()">Upload</button>
   </md-dialog-actions>
   <md-progress-bar *ngIf="uploading" mode="indeterminate"></md-progress-bar>

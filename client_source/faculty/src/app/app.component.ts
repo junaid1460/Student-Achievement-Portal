@@ -14,13 +14,25 @@ export class AppComponent {
   docs = {}
   documents = []
   cdoc_id = null;
-  constructor(private _aps:AppService, private _dialog:MdDialog, private snk:MdSnackBar){
-    this._aps.getStudents().subscribe(e=>{
+  refreshStudents(){
+      this._aps.getStudents().subscribe(e=>{
       this.students = e.json()
+      this.documents = []
+      this.c_stud = null
+      
     }, e=>{
       console.log('coudn\'t fetch student information')
     })
   }
+  constructor(private _aps:AppService, private _dialog:MdDialog, private snk:MdSnackBar){
+    this.refreshStudents()
+  }
+  c_stud:any = null;
+  setStudent(student){
+    this.getDox(student.id)
+    this.c_stud = student;
+  }
+
   getDox(id){
     if(this.docs[id]){
       this.cdoc_id = id;
@@ -53,6 +65,7 @@ export class AppComponent {
   confirm_verify(data){
     this._dialog.open(VerifyDialog, {data : data}).afterClosed().subscribe(e=>{
       if(e==true){
+        this.refresh()
         this.snk.open("Verified successfully", null, {duration:2000})
       }
     }, e=>{

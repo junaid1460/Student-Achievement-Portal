@@ -1,5 +1,37 @@
 
 <md-sidenav-container class="sidebar">
+  <md-sidenav #infonavbar #inf style="width:350px;height:auto;background:white;color:black;" mode="over" align="end">
+    <div *ngIf="navinfo!=null">
+      <md-list class="navlist">
+        <h3 md-subheader>Information</h3>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">title</p>
+          <h4 md-line>{{navinfo._title}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Status</p>
+          <h4 *ngIf="!navinfo._verified == true" md-line>Waiting to get verified</h4>
+          <h4 *ngIf="navinfo._verified == true" md-line>Verified</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Uploaded on</p>
+          <h4 md-line>{{ getDate(navinfo._created_at)}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Academic year</p>
+          <h4 md-line>{{navinfo._year}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Domain</p>
+          <h4 md-line>{{navinfo._domain}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Category</p>
+          <h4 md-line>{{navinfo._category}}</h4>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-sidenav>
   <md-sidenav opened="true" mode="side">
     <div class="sidebar-content">
       <md-list style="width: 320px;">
@@ -26,7 +58,7 @@
     </div>
   </md-sidenav>
   <md-toolbar>
-    <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification portal</span>
+    <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification portal </span>
       <div><a md-raised-button style="background:#e8e8e8;" href="/api/student/certificate" target="_blank"> 
           <md-icon>file_download</md-icon><span> Certificate</span></a>
         <button md-raised-button style="background:#e8e8e8;" (click)="logout()">logout</button>
@@ -56,6 +88,9 @@
           <button [disabled]="file._verified" md-icon-button (click)="openDeleteDialog([file.id])">
             <md-icon md-list-icon>delete</md-icon>
           </button>
+          <button md-icon-button (click)="showInfo(file)">
+            <md-icon md-list-icon>info</md-icon>
+          </button>
         </div>
       </md-list-item>
       <md-list-item *ngIf="documents.length == 0">
@@ -64,11 +99,11 @@
           <p>upload some documents</p>
         </div>
       </md-list-item>
+      <div style="height:100px;"></div>
     </md-list>
   </div>
-  <div style="height:100px;"></div>
 </md-sidenav-container>
-<div class="float-fab">
+<div class="float-fab" *ngIf="!inf.opened">
   <button md-fab *ngIf="delete_button" (click)="delete_selected()">
     <md-icon>delete</md-icon>
   </button>

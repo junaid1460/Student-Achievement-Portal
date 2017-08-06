@@ -3,9 +3,14 @@
     width: 400px;
     background: white
 }
-.stdlist md-list-item:nth-child(even){
-    background: #e8e8e8
+.primary{
+    background: #3f51b5
 }
-.doc{
-    /*color:white*/
+.pback{
+    color:white
+}
+
+
+.dc md-list-item.doc:nth-child(even){
+    background: #e0e0e0
 }

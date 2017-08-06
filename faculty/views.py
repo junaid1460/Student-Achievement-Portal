@@ -10,7 +10,8 @@ import json
 class StudentListView(generics.ListAPIView):
     serializer_class = StudentSerializer
     def get_queryset(self):
-        tmp = Extended.objects.filter(type='S').values('user')
+        # tmp = Extended.objects.filter(type='S').values('user')
+        tmp = Document.objects.filter(_verified = False).only('_user').distinct().values('_user')
         return User.objects.filter(id__in = tmp)
 
 class StudentDocumentListView(generics.ListAPIView):
