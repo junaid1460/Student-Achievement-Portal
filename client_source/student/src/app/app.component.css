@@ -38,3 +38,7 @@ span[space]{
     background: #F44336;
     color:white
 }
+
+.doc .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background{
+    background: #3f51b5
+}

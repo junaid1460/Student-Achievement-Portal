@@ -7,17 +7,22 @@ class Extended(models.Model):
     type = models.CharField(max_length=100)
 
 class Document(models.Model):
-    _user = models.ForeignKey(Extended)
-    _file = models.FileField()
-    _title = models.CharField(max_length = 1000, default = '')
-    _year = models.IntegerField(default=0)
-    _place = models.CharField(max_length = 400, default="")
-    _result = models.CharField(max_length = 100, default ="")
-    _created_at = models.DateTimeField(auto_now_add=True)
-    _verified = models.BooleanField(default= False)
-    _avail_for_verification = models.BooleanField(default= False)
+    _user = models.ForeignKey(Extended) #belongs to which user?
+    _file = models.FileField() # document
+    _title = models.CharField(max_length = 1000, default = '') #title of achievement
+    _year = models.IntegerField(default=0) #academic year
+    _place = models.CharField(max_length = 400, default="") #place if needed
+    _created_at = models.DateTimeField(auto_now_add=True) #automatic created date field
+    _verified = models.BooleanField(default= False) # whether verified or not
+    _date = models.DateField() #year at which achievement earned
+    _domain = models.CharField(max_length = 20, default = "") #national, international, local etc.
+    _category = models.CharField(max_length = 20, default = "") #academic, cultural or sport
+    _avail_for_verification = models.BooleanField(default= False) #whether sent for verification or not
+
 
 class VerifiedDoc(models.Model):
     _verified_by = models.ForeignKey(Extended)
     _document = models.OneToOneField(Document)
+    _created_at = models.DateTimeField(auto_now_add=True)
 
+ 

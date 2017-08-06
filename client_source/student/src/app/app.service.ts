@@ -26,15 +26,21 @@ export class StudentService{
             )
     }
 
-    uploadDocument(title, year, file){
+    uploadDocument(title, year, file, dom, cat, date:Date, place:string){
         let headers = new Headers({  
             'X-CSRFToken': this.getCSRF_TOKEN(),
         });
+        //change date format
+        var tmp = date.getFullYear() +'-'+ date.getMonth() + '-' + date.getDay()
         let req = new RequestOptions({headers:headers})
         var data = new FormData();
         data.append('_file',file)
         data.append('_title',title)
         data.append('_year',year)
+        data.append('_domain',dom)
+        data.append('_category',cat)
+        data.append('_date', tmp)
+        data.append('_place',place)
         return this._http.post('/api/student/docs',data,req)
     }
 }

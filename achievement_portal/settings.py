@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'database',
-    'student'
+    'student',
+    'faculty',
 ]
 
 MIDDLEWARE = [

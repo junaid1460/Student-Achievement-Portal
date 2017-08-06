@@ -37,11 +37,11 @@
     <md-list>
       <h3 md-subheader>Files</h3>
       <md-list-item class="doc" *ngFor="let file of documents">
-        <input type="hidden" value="{{file.id}}">
-        <md-icon md-list-icon>insert_drive_file</md-icon>
+        <md-checkbox [disabled]="file._verified" md-list-icon style="margin-right:10px;" color="primary" (change)="selectFile($event, file.id)"></md-checkbox>
+        <md-icon md-list-icon>insert_drive_file </md-icon>
         <div style="width:100%;">
           <h4 md-line>{{file._title}}</h4>
-          <p md-line>{{file._created_at}}</p>
+          <p md-line>Uploaded on {{ getDate(file._created_at) }}</p>
         </div>
         <div style="display:flex;align-items:center;">
           <md-chip-list style="margin:0 10px 0 0 ;">
@@ -52,8 +52,8 @@
               <md-chip style="background:#4CAF50;color:white;">Verified</md-chip>
             </ng-template>
           </md-chip-list><a md-icon-button href="{{file._file}}" target="_blank">
-            <md-icon md-list-icon sty>file_download</md-icon></a>
-          <button md-icon-button (click)="openDeleteDialog(file.id)">
+            <md-icon md-list-icon sty>open_in_new</md-icon></a>
+          <button [disabled]="file._verified" md-icon-button (click)="openDeleteDialog([file.id])">
             <md-icon md-list-icon>delete</md-icon>
           </button>
         </div>
@@ -69,6 +69,9 @@
   <div style="height:100px;"></div>
 </md-sidenav-container>
 <div class="float-fab">
+  <button md-fab *ngIf="delete_button" (click)="delete_selected()">
+    <md-icon>delete</md-icon>
+  </button>
   <button md-fab (click)="refresh()">
     <md-icon>refresh</md-icon>
   </button>

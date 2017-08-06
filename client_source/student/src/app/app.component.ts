@@ -32,6 +32,17 @@ export class AppComponent {
               private _aps:StudentService,
               private snack:MdSnackBar){
               this.refresh()
+              console.log(new Date("2017-08-01T14:58:55.283596Z").toDateString())
+  }
+  getDate(str){
+    return new Date(str).toDateString()
+  }
+  delete_selected(){
+    var tmp = []
+    this.selected.forEach(e=>{
+      tmp.push(e)
+    })
+    this.openDeleteDialog(tmp)
   }
   openDeleteDialog(event:any){
     console.log(event);
@@ -63,6 +74,19 @@ export class AppComponent {
   logout(){
     window.location.href = "/logout"
   }
+  delete_button = false
+  selected = new Set()
+  selectFile($event, id){
+    if($event.checked == true)
+      this.selected.add(id)
+    else
+      this.selected.delete(id)
+    if(this.selected.size > 0){
+      this.delete_button = true
+    }else{
+      this.delete_button = false
+    }
+  }
 }
 
 
@@ -86,7 +110,8 @@ export class DeleteDialog {
 
 import {FormControl, Validators} from '@angular/forms'
 @Component({
-  templateUrl: './upload.component.html'
+  templateUrl: './upload.component.html',
+  styleUrls:['./upload.component.css']
 })
 export class UploadDialog {
   constructor(public dialogRef: MdDialogRef<UploadDialog>,
@@ -96,11 +121,20 @@ export class UploadDialog {
   @ViewChild('file') file:ElementRef;
   year:any;
   _title:any;
+  _date;
+  _domain:string;
+  _cat:string;
+  _place:string;
   uploading:boolean = false;
   required = new FormControl('',[Validators.required])
   yrequired = new FormControl('',[Validators.required])
-  frequired = new FormControl('',[Validators.required])
+  drequired = new FormControl('',[Validators.required])
+  crequired = new FormControl('',[Validators.required])
+  yorequired = new FormControl('',[Validators.required])
+  prequired = new FormControl('',[Validators.required])
+  
   upload(){
+    console.log(this._date)
     console.log(this.title.nativeElement.value)
     console.log(this.year)
     console.log(this.file.nativeElement.files.length)
@@ -110,7 +144,12 @@ export class UploadDialog {
       this.snack.open('Please select a document to upload.', 'okay', {duration:4000})
       error = true
     }
-    if(this.yrequired.hasError('required') || this.required.hasError('required')){
+    if(this.yrequired.hasError('required') || 
+    this.required.hasError('required')||
+    this.prequired.hasError('required')||
+    this.yorequired.hasError('required')||
+    this.crequired.hasError('required')||
+    this.drequired.hasError('required')){
       this.snack.open('Fix errors.', 'okay', {duration:4000})
       error = true
     }
@@ -123,10 +162,12 @@ export class UploadDialog {
     }
     // upload here
     this.uploading = true;
-    this._aps.uploadDocument(this._title, this.year,this.file.nativeElement.files[0]).subscribe(e =>{
+    this._aps.uploadDocument(this._title, this.year,this.file.nativeElement.files[0]
+                              , this._domain, this._cat, this._date,this._place).subscribe(e =>{
       this.dialogRef.close()
       
     }, err =>{
+      console.log(err)
       this.uploading = false
     })
   }

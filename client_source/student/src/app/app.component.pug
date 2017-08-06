@@ -33,12 +33,16 @@ md-sidenav-container(class = "sidebar")
   div
     md-list
       h3(md-subheader) Files
+
       md-list-item(*ngFor="let file of documents",class="doc")
-        input(type="hidden",value="{{file.id}}",)
-        md-icon(md-list-icon) insert_drive_file
+
+        
+        md-checkbox([disabled]="file._verified",md-list-icon,style="margin-right:10px",color="primary", (change)="selectFile($event, file.id)")
+        md-icon(md-list-icon) insert_drive_file 
         div(style="width:100%")
           h4(md-line) {{file._title}}
-          p(md-line) {{file._created_at}}
+          p(md-line) Uploaded on {{ getDate(file._created_at) }}
+          
         
         div(style="display:flex;align-items:center")
           md-chip-list(style="margin:0 10px 0 0 ")
@@ -49,8 +53,8 @@ md-sidenav-container(class = "sidebar")
           
             
           a(md-icon-button, href="{{file._file}}", target="_blank")
-            md-icon(md-list-icon,sty) file_download
-          button(md-icon-button, (click) = "openDeleteDialog(file.id)")
+            md-icon(md-list-icon,sty) open_in_new
+          button([disabled]="file._verified",md-icon-button, (click) = "openDeleteDialog([file.id])")
             md-icon(md-list-icon) delete
       md-list-item(*ngIf="documents.length == 0")
         div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
@@ -59,6 +63,8 @@ md-sidenav-container(class = "sidebar")
     
   div(style="height:100px")
 div( class="float-fab",)
+  button(md-fab, *ngIf="delete_button", (click)="delete_selected()")
+    md-icon delete
   button(md-fab,(click) = "refresh()")
     md-icon refresh
   button(md-fab, (click) = "openUploadDialog()")

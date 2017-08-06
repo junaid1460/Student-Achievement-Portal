@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {MaterialModule} from '@angular/material'
+import {MaterialModule, MdDatepickerModule, MdNativeDateModule} from '@angular/material'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { AppComponent, DeleteDialog ,UploadDialog, HelpDialog} from './app.component';
@@ -14,7 +14,9 @@ import {HttpModule} from '@angular/http'
     MaterialModule,
     HttpModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MdDatepickerModule,
+    MdNativeDateModule
   ],
   declarations: [
     AppComponent

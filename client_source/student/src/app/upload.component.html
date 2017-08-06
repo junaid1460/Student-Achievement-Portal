@@ -1,29 +1,62 @@
 
-<h2 md-dialog-title>Upload new Document?</h2>
-<md-dialog-content>
-  <md-list>
-    <md-list-item>
-      <md-input-container style="width:100%;">
-        <input mdInput placeholder="Title" [(ngModel)]="_title" #title [formControl]="required">
-        <md-error *ngIf="required.hasError('required')">Title is required</md-error>
-      </md-input-container>
-    </md-list-item>
-    <md-list-item>
-      <input type="file" style="width:100%;" #file><br>
-    </md-list-item>
-    <md-list-item>
-      <md-select placeholder="Year" [(ngModel)]="year" [formControl]="yrequired">
-        <md-option [value]="1">1st Year</md-option>
-        <md-option [value]="2">2nd Year</md-option>
-        <md-option [value]="3">3rd Year</md-option>
-        <md-option [value]="4">4th Year</md-option>
-      </md-select><br>
-      <md-error *ngIf="yrequired.hasError('required')" style="padding-left:10px;">  Select year of doc</md-error>
-    </md-list-item>
-  </md-list>
-</md-dialog-content>
-<md-dialog-actions>
-  <button md-button md-dialog-close>Cancel</button>
-  <button md-button (click)="upload()">Upload</button>
-</md-dialog-actions>
-<md-progress-bar *ngIf="uploading" mode="indeterminate"></md-progress-bar>
+<div style="width:40vw;">
+  <h2 md-dialog-title>Upload new Document?</h2>
+  <md-dialog-content>
+    <md-list class="ulist">
+      <md-list-item class="pad">
+        <md-input-container style="width:100%;">
+          <input mdInput placeholder="Title" [(ngModel)]="_title" #title [formControl]="required">
+          <md-error *ngIf="required.hasError('required')">Title is required</md-error>
+        </md-input-container>
+      </md-list-item>
+      <md-list-item class="pad">
+        <md-input-container style="width:100%;">
+          <input mdInput placeholder="Location/place" [(ngModel)]="_place" #place [formControl]="prequired">
+          <md-error *ngIf="prequired.hasError('required')"> Event location is required</md-error>
+        </md-input-container>
+      </md-list-item>
+      <md-list-item>
+        <input type="file" style="width:100%;" #file>
+      </md-list-item>
+      <md-list-item>
+        <md-select placeholder="Domain" [(ngModel)]="_domain" [formControl]="drequired">
+          <md-option [value]="1">Local</md-option>
+          <md-option [value]="2">Natioal</md-option>
+          <md-option [value]="3">International</md-option>
+        </md-select><br>
+        <md-error *ngIf="drequired.hasError('required')" style="padding-left:10px;">  Select domain please</md-error>
+      </md-list-item>
+      <md-list-item>
+        <md-select placeholder="Category" [(ngModel)]="_cat" [formControl]="crequired">
+          <md-option [value]="1">Academic</md-option>
+          <md-option [value]="2">Cultural</md-option>
+          <md-option [value]="2">Technical</md-option>
+          <md-option [value]="2">Sport &amp; other </md-option>
+        </md-select><br>
+        <md-error *ngIf="crequired.hasError('required')" style="padding-left:10px;">  Select Category please</md-error>
+      </md-list-item>
+      <md-list-item>
+        <md-input-container style="width:100%;">
+          <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="_date" #_year_of_doc [formControl]="yorequired">
+          <md-error *ngIf="yorequired.hasError('required')">Date is required</md-error>
+          <button mdSuffix [mdDatepickerToggle]="picker"></button>
+        </md-input-container>
+        <md-datepicker #picker></md-datepicker>
+      </md-list-item>
+      <md-list-item>
+        <md-select placeholder="Year" [(ngModel)]="year" [formControl]="yrequired">
+          <md-option [value]="1">1st Year</md-option>
+          <md-option [value]="2">2nd Year</md-option>
+          <md-option [value]="3">3rd Year</md-option>
+          <md-option [value]="4">4th Year</md-option>
+        </md-select><br>
+        <md-error *ngIf="yrequired.hasError('required')" style="padding-left:10px;">  Select year of doc</md-error>
+      </md-list-item>
+    </md-list>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <button md-button md-dialog-close>Cancel</button>
+    <button md-button (click)="upload()">Upload</button>
+  </md-dialog-actions>
+  <md-progress-bar *ngIf="uploading" mode="indeterminate"></md-progress-bar>
+</div>

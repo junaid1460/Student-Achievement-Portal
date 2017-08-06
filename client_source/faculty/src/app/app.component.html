@@ -1,0 +1,60 @@
+
+<md-sidenav-container style="height:100vh;">
+  <md-sidenav class="sidenav" opened="true" mode="side">
+    <md-nav-list class="stdlist">
+      <h4 md-subheader>Students</h4>
+      <md-list-item *ngFor="let student of students" (click)="getDox(student.id)">
+        <md-icon style="font-size:25pt;margin-right:20px;">account_circle</md-icon>
+        <div style="width:100%;">
+          <h4 md-line>{{student.username}}</h4>
+          <p md-line>{{first_name}} {{last_name}}</p>
+        </div>
+      </md-list-item>
+    </md-nav-list>
+  </md-sidenav>
+  <md-toolbar>
+    <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification Verification</span>
+      <div>
+        <button md-raised-button style="background:#e8e8e8;" (click)="logout()">logout</button>
+      </div>
+    </div>
+  </md-toolbar>
+  <md-list>
+    <h3 md-subheader>Files</h3>
+    <md-list-item class="doc" *ngFor="let file of documents">
+      <md-checkbox style="margin-right:10px;" (change)="check($event, file.id)"></md-checkbox>
+      <div style="width:100%;">
+        <h4 md-line>{{file._title}}</h4>
+        <p md-line>{{file._created_at}}</p>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <md-chip-list style="margin:0 10px 0 0 ;">
+          <ng-template [ngIf]="!file._verified == true">
+            <md-chip>Unverified</md-chip>
+          </ng-template>
+          <ng-template [ngIf]="file._verified == true">
+            <md-chip style="background:#4CAF50;color:white;">Verified</md-chip>
+          </ng-template>
+        </md-chip-list><a md-mini-fab href="{{file._file}}" target="_blank" style="margin-right:10px;">
+          <md-icon md-icon>open_in_new</md-icon></a>
+        <button md-mini-fab (click)="verify(file.id)">
+          <md-icon md-icon>check_circle</md-icon>
+        </button>
+      </div>
+    </md-list-item>
+    <md-list-item *ngIf="documents.length == 0">
+      <div style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;">
+        <h1 style="width:100%;text-align:center;">Nothing to show</h1>
+        <p>upload some documents</p>
+      </div>
+    </md-list-item>
+  </md-list>
+  <div style="position:fixed;bottom:0;right:0;margin:30px;">
+    <button md-fab *ngIf="verify_button" (click)="confirm_verify(checked)">
+      <md-icon md-icon>done</md-icon>
+    </button>
+    <button md-fab (click)="refresh()">
+      <md-icon md-icon>refresh</md-icon>
+    </button>
+  </div>
+</md-sidenav-container>

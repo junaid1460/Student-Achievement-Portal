@@ -1,0 +1,11 @@
+.sidenav{
+    height: 100vh;
+    width: 400px;
+    background: white
+}
+.stdlist md-list-item:nth-child(even){
+    background: #e8e8e8
+}
+.doc{
+    /*color:white*/
+}

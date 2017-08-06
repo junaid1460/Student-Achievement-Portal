@@ -25,14 +25,22 @@ def delete(req):
             print(req.body.decode('utf-8'))
             data = json.loads(req.body.decode('utf-8'))
             print(data.get('id'))
-            try:
-                doc =  Document.objects.get(pk = data.get('id'))
-                print(doc)
-                doc.delete()
-            except Document.DoesNotExist:
-                print("already deleted")
-                return JsonResponse({'status':'Does not exist or Already delted. please refresh.'})
+            ids = data.get('id')
+            cd = False
+            vd = False
+            for id in ids:
+                try:
+                    doc =  Document.objects.get(pk = id)
+                    print(doc)
+                    if doc._verified != True:
+                        doc.delete()
+                    else:
+                        print("Document verified, cannot delete")
+                except Document.DoesNotExist:
+                    
+                    print("already deleted")
+                    # return JsonResponse({'status':'Does not exist or Already delted. please refresh.'})
             return JsonResponse({'status':'deleted'})
-        else:
-            return render(req, 'test.html')
+        # else:
+        #     return render(req, 'test.html')
     raise Http404
