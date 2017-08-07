@@ -5,3 +5,6 @@ staticfiles
 .vscode
 db.sqlite3
 database/migrations
+student/migrations
+stats/migrations
+faculty/migrations
