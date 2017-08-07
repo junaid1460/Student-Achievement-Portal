@@ -20,6 +20,7 @@ class Document(models.Model):
     _avail_for_verification = models.BooleanField(default= False) #whether sent for verification or not
 
 
+
 class VerifiedDoc(models.Model):
     _verified_by = models.ForeignKey(Extended)
     _document = models.OneToOneField(Document)
