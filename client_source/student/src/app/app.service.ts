@@ -31,7 +31,8 @@ export class StudentService{
             'X-CSRFToken': this.getCSRF_TOKEN(),
         });
         //change date format
-        var tmp = date.getFullYear() +'-'+ date.getMonth() + '-' + date.getDay()
+        // var tmp = date.getFullYear() +'-'+ date.getMonth() + '-' + date.getDay()
+        var tmp = date.toISOString()
         let req = new RequestOptions({headers:headers})
         var data = new FormData();
         data.append('_file',file)
