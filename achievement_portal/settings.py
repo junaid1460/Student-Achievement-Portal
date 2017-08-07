@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "9=idmiyevlm)p%878miy_^yda^p4rkk#(izv#1&hgqf*!k()_w"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_extensions',
-    'database',
-    'student',
-    'faculty',
-    'stats',
+    'database.apps.DatabaseConfig',
+    'student.apps.StudentConfig',
+    'faculty.apps.FacultyConfig',
+    'stats.apps.StatsConfig',
 ]
 
 MIDDLEWARE = [
