@@ -40,7 +40,7 @@ export class StudentService{
         data.append('_year',year)
         data.append('_domain',dom)
         data.append('_category',cat)
-        data.append('_date', tmp)
+        data.append('_event_time', tmp)
         data.append('_place',place)
         return this._http.post('/api/student/docs',data,req)
     }

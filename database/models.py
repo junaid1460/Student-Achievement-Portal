@@ -7,7 +7,7 @@ class Extended(models.Model):
     type = models.CharField(max_length=100)
 
 class Document(models.Model):
-    _date = models.DateTimeField() #year at which achievement earned
+    _event_time = models.DateTimeField() #year at which achievement earned
     _user = models.ForeignKey(Extended) #belongs to which user?
     _file = models.FileField() # document
     _title = models.CharField(max_length = 1000, default = '') #title of achievement
