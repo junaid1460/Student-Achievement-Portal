@@ -26,11 +26,11 @@ md-sidenav-container(style="height:100vh;")
       h3(md-subheader) Files
         
       md-list-item(*ngFor="let file of documents",class="doc")
-        md-checkbox(style="margin-right:10px",(change)="check($event, file.id)")
+        md-checkbox(style="margin-right:10px",color="primary",(change)="check($event, file.id)")
         //- md-icon(md-list-icon) insert_drive_file
         div(style="width:100%")
           h4(md-line) {{file._title}}
-          p(md-line) {{file._created_at}}
+          p(md-line) {{ getDate(file._created_at) }}
         
         div(style="display:flex;align-items:center")
           md-chip-list(style="margin:0 10px 0 0 ")

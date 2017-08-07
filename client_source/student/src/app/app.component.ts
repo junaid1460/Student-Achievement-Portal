@@ -64,7 +64,8 @@ export class AppComponent {
   }
   openUploadDialog(){
     let d = this.dialog.open(UploadDialog).afterClosed().subscribe( res =>{
-        this.refresh()
+        if(res==true)
+          this.refresh()
     })
   }
   openHelpDialog(){
@@ -172,7 +173,7 @@ export class UploadDialog {
     this.uploading = true;
     this._aps.uploadDocument(this._title, this.year,this.file.nativeElement.files[0]
                               , this._domain, this._cat, this._date,this._place).subscribe(e =>{
-      this.dialogRef.close()
+      this.dialogRef.close(true)
       
     }, err =>{
       console.log(err)

@@ -24,6 +24,9 @@ export class AppComponent {
       console.log('coudn\'t fetch student information')
     })
   }
+   getDate(str){
+    return new Date(str).toDateString()
+  }
   constructor(private _aps:AppService, private _dialog:MdDialog, private snk:MdSnackBar){
     this.refreshStudents()
   }

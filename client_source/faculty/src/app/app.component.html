@@ -33,10 +33,10 @@
   <md-list class="dc">
     <h3 md-subheader>Files</h3>
     <md-list-item class="doc" *ngFor="let file of documents">
-      <md-checkbox style="margin-right:10px;" (change)="check($event, file.id)"></md-checkbox>
+      <md-checkbox style="margin-right:10px;" color="primary" (change)="check($event, file.id)"></md-checkbox>
       <div style="width:100%;">
         <h4 md-line>{{file._title}}</h4>
-        <p md-line>{{file._created_at}}</p>
+        <p md-line>{{ getDate(file._created_at) }}</p>
       </div>
       <div style="display:flex;align-items:center;">
         <md-chip-list style="margin:0 10px 0 0 ;">

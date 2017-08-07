@@ -20,12 +20,14 @@ from .views import home, log_out
 from django.contrib.auth.views import login
 from student import urls as student_urls
 from faculty import urls as faculty_urls
+from stats import urls as stats_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',home),
     url(r'^logout/$', log_out),
     url(r'^api/student/', include(student_urls)),
-    url(r'^api/faculty/', include(faculty_urls))
+    url(r'^api/faculty/', include(faculty_urls)),
+    url(r'^stats', include(stats_urls))
     
 ]
 
@@ -34,3 +36,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # ... the rest of your URLconf goes here ...
 
 urlpatterns += staticfiles_urlpatterns()
+
+from init import init
+try:
+    init()
+except BaseException:
+    pass
