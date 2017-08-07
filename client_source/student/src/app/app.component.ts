@@ -10,29 +10,28 @@ import {StudentService} from './app.service'
 export class AppComponent {
   refreshing:boolean  = false;
   @ViewChild('infonavbar') infonav:MdSidenav;
-  refresh(){
+  refresh(not:boolean = true){
     if(!this.refreshing){
+      if(not)
       this.snack.open('Refreshing page! wait for a while','okay', {duration: 2000})
       this.refreshing = true;
        this._aps.getDocuments().subscribe(e => {
         this.documents = e.json()
         this.refreshing = false
+        if(not)
         this.snack.open('Successfully refreshed page','okay', {duration: 2000})
+    },e=>{
+      this.snack.open('Something went wrong while fetching documents. please retry','okay', {duration: 2000})
     })
     }
   }
   title = 'Student app';
   documents = [
-    {
-      name : "Sambram coding and debugging",
-      file : "xabcd.pdf",
-      verified : false
-    }
   ]
   constructor(private dialog:MdDialog,
               private _aps:StudentService,
               private snack:MdSnackBar){
-              this.refresh()
+              this.refresh(false)
               console.log(new Date("2017-08-01T14:58:55.283596Z").toDateString())
   }
   getDate(str){
