@@ -58,6 +58,11 @@ def new_user(username, email, password, faculty = False, fname = '', lname = '')
         ext.save()
 
     else:
+        try:
+            ext = Extended(user = user, type = 'F' if faculty else 'S')
+            ext.save()
+        except BaseException:
+            pass
         print("User exist")
         return False
 
