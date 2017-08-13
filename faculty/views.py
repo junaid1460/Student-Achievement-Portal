@@ -27,7 +27,7 @@ class StudentDocumentListView(generics.ListAPIView):
 
 
 def verify(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() and request.method == 'POST':
         if request.user.extended.type != 'F':
             return JsonResponse({'status' : 'You\'re not authorised to perform this operation.'})
         
@@ -54,10 +54,42 @@ def verify(request):
                 continue
             print("proper 1")
             res[0]._verified = True
-            print(res[0]._date)
+            res[0]._has_error = False
+            res[0]._error_message = ""
+            print()
             res[0].save()
             print("proper 2")
             verifier = VerifiedDoc(_document = res[0], _verified_by = request.user.extended)
             verifier.save()
         return JsonResponse({'status' : 'Document verified!'})
+
+def setErrorMessage(request):
+    if request.user.is_authenticated() and request.method == 'POST':
+        if request.user.extended.type != 'F':
+            return JsonResponse({'status' : 'You\'re not authorised to perform this operation.'})
+        #from here
+
+        data = json.loads(request.body.decode('utf-8'))
+        doc_id = data['doc_id']
+        message = data['message']
+        try:
+            doc_id = int(doc_id)
+        except BaseException:
+            return JsonResponse({'status' : 'something is not right'})
+        doc = None
+        try:
+            doc = Document.objects.get(id = doc_id)
+            if doc is None:
+                raise Document.DoesNotExist
+        except BaseException:
+            return JsonResponse({'status' : 'document not found'})
+
+        doc._has_error = True
+        doc._error_message = message
+        doc.save()
+        return JsonResponse({'status' : 'Worked!'})
+
+        #till here
+    return JsonResponse({'status' : 'You\'re not authorised to perform this operation.'})
+
         

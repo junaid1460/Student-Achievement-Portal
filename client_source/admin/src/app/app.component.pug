@@ -1,0 +1,33 @@
+md-sidenav-container(style="height:100vh;")
+    md-sidenav(opened="true", style="width:350px;background:#3F51B5", mode="side")
+        input(type="file", style="display:none", #file, accept=".csv",(change)="upload($event)")
+        md-nav-list(class="options")
+            md-list-item((click)="file.click()") Load CSV
+             
+    md-toolbar
+        span Admin
+
+
+
+    div(*ngIf="records.length == 0", style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
+                h1(style="width:100%;text-align:center") Nothing to show
+                p() Load csv file
+    table(*ngIf="records.length != 0") 
+        tr
+            th Username
+            th Email
+            th first name
+            th last name
+            th faculty?
+        tr(*ngFor="let row of records")
+            td {{row.username}}
+            td {{row.email}}
+            td {{row.first_name}}
+            td {{row.last_name}}
+            td(*ngIf="row.is_faculty") Yes
+            td(*ngIf="!row.is_faculty") No
+    div(*ngIf="records.length != 0", style = "position:fixed;bottom:0;right:0;margin:10px")
+        button(md-fab, color="primary",(click)="uploadCSV()")
+            md-icon file_upload
+    
+            

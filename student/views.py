@@ -33,6 +33,7 @@ def delete(req):
                     doc =  Document.objects.get(pk = id)
                     print(doc)
                     if doc._verified != True:
+                        doc._file.delete(False)
                         doc.delete()
                     else:
                         print("Document verified, cannot delete")

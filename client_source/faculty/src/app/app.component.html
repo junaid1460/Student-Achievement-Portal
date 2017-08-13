@@ -1,5 +1,54 @@
 
 <md-sidenav-container style="height:100vh;">
+  <md-sidenav #infonavbar #inf style="width:350px;height:auto;background:white;color:black;" mode="over" align="end">
+    <div *ngIf="navinfo!=null">
+      <md-list class="navlist">
+        <h3 md-subheader>Information</h3>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">title</p>
+          <h4 md-line>{{navinfo._title}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Status</p>
+          <h4 *ngIf="!navinfo._verified == true" md-line>Waiting to get verified</h4>
+          <h4 *ngIf="navinfo._verified == true" md-line>Verified</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Uploaded on</p>
+          <h4 md-line>{{ getDate(navinfo._created_at)}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Academic year</p>
+          <h4 md-line>{{navinfo._year}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Domain</p>
+          <h4 md-line>{{navinfo._domain}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Category</p>
+          <h4 md-line>{{navinfo._category}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Actions</p><a md-button href="{{navinfo._file}}" mdTooltip="Open" target="_blank" style="margin-right:10px;">open
+            <md-icon md-icon>open_in_new</md-icon></a>
+          <button md-button (click)="verify(navinfo.id)" mdTooltip="Verify">Verify
+            <md-icon md-icon>check_circle</md-icon>
+          </button>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Error Notifications</p>
+          <button md-button (click)="setMessage(navinfo)" mdTooltip="Verify">Notify
+            <md-icon md-icon>error</md-icon>
+          </button>
+        </md-list-item>
+        <md-list-item *ngIf="navinfo._has_error">
+          <p md-line md-subheader style="height:auto;font-size:12px;color:red;">Error</p>
+          <h4 md-line style="color:red;">{{navinfo._error_message}}</h4>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-sidenav>
   <md-sidenav class="sidenav" opened="true" mode="side">
     <md-nav-list class="stdlist">
       <h4 md-subheader style="margin-bottom:20px;">Students<span style="margin:0 0 0 10px;">|</span>
@@ -21,7 +70,16 @@
   </md-sidenav>
   <md-toolbar>
     <div style="width:100%;display:flex;justify-content:space-between;"><span>Certification Verification</span>
-      <div></div>
+      <div>
+        <button md-icon-button [mdMenuTriggerFor]="menu">
+          <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu #menu="mdMenu">
+          <button md-menu-item (click)="openPasswordDialog()">
+            <md-icon>mode_edit</md-icon><span> password</span>
+          </button>
+        </md-menu>
+      </div>
     </div>
   </md-toolbar>
   <md-card *ngIf="c_stud != null" style="margin:12px;">
@@ -51,6 +109,9 @@
         <button md-icon-button (click)="verify(file.id)" mdTooltip="Verify">
           <md-icon md-icon>check_circle</md-icon>
         </button>
+        <button md-icon-button (click)="showInfo(file)" mdTooltip="Information">
+          <md-icon md-icon>info</md-icon>
+        </button>
       </div>
     </md-list-item>
     <md-list-item *ngIf="documents.length == 0">
@@ -62,7 +123,7 @@
     <div style="height:100px;"></div>
   </md-list>
 </md-sidenav-container>
-<div style="position:fixed;bottom:0;right:0;margin:30px;">
+<div *ngIf="!infonavbar.opened" style="position:fixed;bottom:0;right:0;margin:30px;">
   <button class="primary pback" md-fab *ngIf="verify_button" (click)="confirm_verify(checked)" mdTooltip="Verify" mdTooltipPosition="above">
     <md-icon md-icon>done</md-icon>
   </button>

@@ -31,6 +31,29 @@ export class AppService{
         return this._http.post('/api/faculty/docs/student/verify',
             JSON.stringify({'doc_id' :x}),req
             )
+        
     
     }
+    setMessage(id:number, message:string){
+         let headers = new Headers({ 
+      'Content-Type': 'application/json', 
+      'X-CSRFToken': this.getCSRF_TOKEN(),
+     });
+     let req = new RequestOptions({headers:headers})
+        
+        return this._http.post('/api/faculty/docs/setmessage',
+            JSON.stringify({'doc_id' :id, 'message':message}),req
+            )
+    
+        }
+
+    changePass(cpass,npass){
+        let headers = new Headers({  
+            'X-CSRFToken': this.getCSRF_TOKEN(),
+        });
+        return this._http.post('/password',
+            JSON.stringify({'current_password':cpass, 'new_password':npass}),{headers:headers}
+            )
+    }
+    
 }

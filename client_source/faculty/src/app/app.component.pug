@@ -1,4 +1,41 @@
 md-sidenav-container(style="height:100vh;")
+    md-sidenav(#infonavbar,#inf,style="width:350px;height:auto;background:white;color:black", mode="over", align="end")
+      div(class="", *ngIf="navinfo!=null")
+        md-list(class="navlist")
+          h3(md-subheader) Information
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") title
+            h4(md-line) {{navinfo._title}}
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Status
+            h4(*ngIf="!navinfo._verified == true",md-line) Waiting to get verified
+            h4(*ngIf="navinfo._verified == true", md-line) Verified
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
+            h4(md-line) {{ getDate(navinfo._created_at)}}
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
+            h4(md-line) {{navinfo._year}}
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Domain
+            h4(md-line) {{navinfo._domain}}
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Category
+            h4(md-line) {{navinfo._category}}
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Actions
+            a(md-button, href="{{navinfo._file}}", mdTooltip="Open", target="_blank",style="margin-right:10px") open
+              md-icon(md-icon) open_in_new
+            button(md-button, (click) = "verify(navinfo.id)",  mdTooltip="Verify") Verify
+              md-icon(md-icon) check_circle
+          md-list-item
+            p(md-line,md-subheader,style="height:auto;font-size:12px") Error Notifications
+            button(md-button, (click) = "setMessage(navinfo)",  mdTooltip="Verify") Notify
+              md-icon(md-icon) error
+          md-list-item(*ngIf="navinfo._has_error")
+            p(md-line,md-subheader,style="height:auto;font-size:12px;color:red") Error
+            h4(md-line,style="color:red") {{navinfo._error_message}}
+
     md-sidenav(class="sidenav",opened="true",mode="side")
         md-nav-list(class="stdlist")
             h4(md-subheader, style="margin-bottom:20px") Students
@@ -17,6 +54,12 @@ md-sidenav-container(style="height:100vh;")
       div(style="width:100%;display:flex;justify-content:space-between")
         span Certification Verification
         div
+          button(md-icon-button,[mdMenuTriggerFor]="menu")
+            md-icon more_vert
+          md-menu(#menu="mdMenu")
+            button(md-menu-item,(click)="openPasswordDialog()")
+              md-icon mode_edit
+              span  password
           
     md-card(*ngIf="c_stud != null", style="margin:12px")
       md-card-header
@@ -44,12 +87,14 @@ md-sidenav-container(style="height:100vh;")
             md-icon(md-icon) open_in_new
           button(md-icon-button, (click) = "verify(file.id)",  mdTooltip="Verify")
             md-icon(md-icon) check_circle
+          button(md-icon-button, (click) = "showInfo(file)",  mdTooltip="Information")
+            md-icon(md-icon) info
       md-list-item(*ngIf="documents.length == 0")
         div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
           h1(style="width:100%;text-align:center") Nothing to show
           p() upload some documents
       div(style="height:100px")
-div(style="position:fixed;bottom:0;right:0;margin:30px")
+div(*ngIf="!infonavbar.opened",style="position:fixed;bottom:0;right:0;margin:30px")
   button(class="primary pback",md-fab, style="", *ngIf="verify_button", (click)="confirm_verify(checked)",  mdTooltip="Verify", mdTooltipPosition="above")
     md-icon(md-icon) done
   button(*ngIf="documents.length > 0",class="primary pback",md-fab, style="", (click) = "refresh()", mdTooltip="Refresh", mdTooltipPosition="above")

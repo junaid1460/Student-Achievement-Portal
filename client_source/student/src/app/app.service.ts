@@ -42,6 +42,16 @@ export class StudentService{
         data.append('_category',cat)
         data.append('_event_time', tmp)
         data.append('_place',place)
+        data.append('_has_error','0')
+        data.append('_error_message','')
         return this._http.post('/api/student/docs',data,req)
+    }
+    changePass(cpass,npass){
+        let headers = new Headers({  
+            'X-CSRFToken': this.getCSRF_TOKEN(),
+        });
+        return this._http.post('/password',
+            JSON.stringify({'current_password':cpass, 'new_password':npass}),{headers:headers}
+            )
     }
 }

@@ -1,0 +1,13 @@
+.options md-list-item{
+        background-color: #ffffff;
+    color: #3F51B5;
+    margin: 20px;
+    border-radius: 3px;
+}
+td{
+    text-align: center;
+    padding: 10px
+}
+table{
+    width:100%
+}

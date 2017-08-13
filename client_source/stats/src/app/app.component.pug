@@ -1,24 +1,111 @@
-div(class="overlay", *ngIf="show_overlay")
-    md-toolbar(color="primary")
-        div( style="width:100%;display:flex;justify-content:space-between")
-            span Search
-            button(md-button,(click)="toggleOverlay()") Close
-                md-icon close
-    div(style="background:white;display:flex;width:100%;height:100%;flex-direction:column;align-items:center")
-        div(style="width:50vw")
-            md-nav-list
-                
-                md-input-container(style="width:100%")
-                    input(mdInput, type="text")
-                    md-icon(mdSuffix) search
-                p(md-subheader) results
+md-sidenav-container(class="sidenav")
+    md-sidenav(#infonavbar,#inf,style="width:350px;height:auto;background:white;color:black", mode="over", align="end")
+        div(class="", *ngIf="navinfo!=null")
+            md-list(class="navlist")
+                h3(md-subheader) Information
                 md-list-item
-                    span something
-           
-md-toolbar
-    div(style="display:flex;width:100%;flex-direction:row;align-items:center;justify-content:space-between")
-        div
-            span Stats
-        div
-            button(md-mini-fab,color="primary",(click)="toggleOverlay()")
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Student
+                    h4(md-line) {{navinfo._user.user.username}}, {{navinfo._user.user.first_name }} {{navinfo._user.user.last_name }} 
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") title
+                    h4(md-line) {{navinfo._title}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Status
+                    h4(*ngIf="!navinfo._verified == true",md-line) Waiting to get verified
+                    h4(*ngIf="navinfo._verified == true", md-line) Verified
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
+                    h4(md-line) {{ getDate(navinfo._created_at)}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
+                    h4(md-line) {{navinfo._year}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Domain
+                    h4(md-line) {{navinfo._domain}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Category
+                    h4(md-line) {{navinfo._category}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Place
+                    h4(md-line) {{navinfo._place}}
+                
+    md-toolbar
+        span Stats
+    md-sidenav(mode="side", opened="true", class="options",style="width:400px")
+        md-list(class="filters")
+            
+            li
+                md-input-container(style="width:100%")
+                    input(mdInput,[(ngModel)]="val", placeholder="search", (keydown)="check($event)")
+                    button(mdSuffix, md-icon-button, (click)="search()")
+                        md-icon search
+                    button(mdSuffix, md-icon-button, (click)="addVal()")
+                        md-icon add
+               
+            li
+                p(md-subheader) And Domain
+                ul(class="filter-options")
+                    li(*ngFor="let d of domain_list")
+                        md-checkbox((change)="addDomain($event, d)",color="primary") {{d}}
+                    
+            li
+                p(md-subheader) And Category
+                ul(class="filter-options")
+                    li(*ngFor="let c of cat_list")
+                        md-checkbox((change)="addCategory($event, c)",color="primary") {{c}}
+                    
+            li
+                p(md-subheader) And Academic Year
+                ul(class="filter-options")
+                    li(*ngFor="let y of year_list")
+                        md-checkbox((change)="addYear($event,y[1])",color="primary") {{y[0]}}
+                    
+    md-card(style="margin:10px",class="searches")
+        md-card-title 
+            p(md-subheader) Keywords :
+        button(md-raised-button,*ngIf="usns.size == 0 && years.size == 0")
+            span all
+        button(md-raised-button, *ngFor="let usn of usns",(click)="usns.delete(usn)")
+            span {{ usn }}
+            md-icon close
+        button(md-raised-button, *ngFor="let year of years", color="primary",(click)="years.delete(year)")
+                span {{ year }}
+                md-icon close 
+        md-card-actions(style="display:flex;flex-direction:row-reverse")
+            button(md-button, (click)="clear()") clear all searches  
+            button(md-button, (click)="search()") search
                 md-icon search
+    md-list(class="dc")
+        h4(md-subheader) Files 
+        h3(md-subheader) Total results : {{ count }}
+        
+        md-list-item(*ngFor="let file of docs",class="doc")
+            md-icon(md-list-icon) insert_drive_file
+            //- md-icon(md-list-icon) insert_drive_file
+            div(style="width:100%")
+                h4(md-line) {{file._title}}
+                p(md-line) {{ getDate(file._created_at) }}
+        
+            div(style="display:flex;align-items:center")
+                md-chip-list(style="margin:0 10px 0 0 ")
+                    ng-template([ngIf]="!file._verified == true")
+                        md-chip(style="background:#f44336;color:white") Unverified
+                    ng-template([ngIf]="file._verified == true")
+                        md-chip(style="background:#4CAF50;color:white") Verified
+          
+            
+            a(md-icon-button, href="{{file._file}}", mdTooltip="Open", target="_blank",style="margin-right:10px")
+                md-icon(md-icon) open_in_new
+          
+            button(md-icon-button, (click) = "showInfo(file)",  mdTooltip="Information")
+                md-icon(md-icon) info
+        md-list-item(*ngIf="docs.length == 0")
+            div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
+                h1(style="width:100%;text-align:center") Nothing to show
+                p() upload some documents
+        div(style="display:flex;justify-content:center")
+            button(md-raised-button, *ngIf="nextpage != null", (click)="loadMore(nextpage)") load more
+                md-icon cloud_download
+        
+        div(style="height:100px")
+

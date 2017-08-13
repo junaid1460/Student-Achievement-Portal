@@ -72,6 +72,12 @@ export class AppComponent {
       console.log(res)
     })
   }
+  openPasswordDialog(){
+    let d = this.dialog.open(PasswordDialog).afterClosed().subscribe( res =>{
+      console.log(res)
+    })
+  }
+  
   logout(){
     window.location.href = "/logout"
   }
@@ -168,6 +174,7 @@ export class UploadDialog {
       this.snack.open('File is too big, max file size is upto 800kb.', 'okay', {duration:4000})
       return
     }
+    console.log(this.file.nativeElement.files[0].size)
     // upload here
     this.uploading = true;
     this._aps.uploadDocument(this._title, this.year,this.file.nativeElement.files[0]
@@ -188,4 +195,35 @@ export class UploadDialog {
 })
 export class HelpDialog {
   constructor(public dialogRef: MdDialogRef<HelpDialog>) {}
+}
+
+@Component({
+  templateUrl: './password.component.html'
+})
+export class PasswordDialog {
+  constructor(public dialogRef: MdDialogRef<PasswordDialog>,
+  private _aps:StudentService,
+private snk:MdSnackBar) {}
+  current_password:string = "";
+  new_password:string = "";
+  changePass(){
+    if(this.current_password.length == 0){
+      this.snk.open('Please enter current password',null,{duration:2000});
+      return
+    }
+    if(this.new_password.length <= 7){
+      this.snk.open('new Password is too short. 8 characters required.',null,{duration:2000})
+      return
+    }
+    this._aps.changePass(this.current_password,this.new_password).subscribe(e=>{
+      if(e.json().status == true){
+        // this.snk.open('password has been changed!', null, {duration:2000})
+        window.location.href = '/'
+      }else{
+        this.snk.open('That didn\'t work, check whether password is correct!', null, {duration:2000})
+      }
+    }, e=>{
+      this.snk.open('something went wrong!', null, {duration:2000})
+    })
+  }
 }

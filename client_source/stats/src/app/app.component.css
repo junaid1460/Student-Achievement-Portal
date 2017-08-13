@@ -1,9 +1,28 @@
-.overlay{
-    position: fixed;
-    top:0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #3f51b5;
-    z-index: 1;
+.sidenav{
+    height:100vh;
+    width:100vw;
+}
+.options{
+    width:350px;
+  
+}
+.options md-list md-list-item *{
+    color:white;
+}
+.mat-select-trigger{
+    background: white
+}
+.filters{
+    margin:33px;
+    list-style:none;
+}
+.filter-options{
+    list-style:none;
+    margin:10px;
+}
+.searches button{
+    margin: 2px
+}
+.dc .doc:nth-child(even){
+    background: #e0e0e0
 }

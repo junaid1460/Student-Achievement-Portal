@@ -5,4 +5,4 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = Document
         fields = ('id', '_file','_domain','_category',
         '_event_time','_place', '_title','_year','_verified',
-        '_avail_for_verification', '_created_at')
+        '_avail_for_verification', '_created_at', '_has_error', '_error_message')

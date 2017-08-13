@@ -29,6 +29,10 @@
           <p md-line md-subheader style="height:auto;font-size:12px;">Category</p>
           <h4 md-line>{{navinfo._category}}</h4>
         </md-list-item>
+        <md-list-item *ngIf="navinfo._has_error">
+          <p md-line md-subheader style="height:auto;font-size:12px;color:red;">Error</p>
+          <h4 md-line style="color:red;">{{navinfo._error_message}}</h4>
+        </md-list-item>
       </md-list>
     </div>
   </md-sidenav>
@@ -62,13 +66,21 @@
       <div><a md-raised-button style="background:#e8e8e8;" href="/api/student/certificate" target="_blank"> 
           <md-icon>file_download</md-icon><span> Certificate</span></a>
         <button md-raised-button style="background:#e8e8e8;" (click)="logout()">logout</button>
+        <button md-icon-button [mdMenuTriggerFor]="menu">
+          <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu #menu="mdMenu">
+          <button md-menu-item (click)="openPasswordDialog()">
+            <md-icon>mode_edit</md-icon><span> password</span>
+          </button>
+        </md-menu>
       </div>
     </div>
   </md-toolbar>
   <div>
     <md-list>
       <h3 md-subheader>Files</h3>
-      <md-list-item class="doc" *ngFor="let file of documents">
+      <md-list-item class="doc" *ngFor="let file of documents" [style.background]="file._has_error?'#fb9f98':'inherit'">
         <md-checkbox [disabled]="file._verified" md-list-icon style="margin-right:10px;" color="primary" (change)="selectFile($event, file.id)"></md-checkbox>
         <md-icon md-list-icon>insert_drive_file </md-icon>
         <div style="width:100%;">

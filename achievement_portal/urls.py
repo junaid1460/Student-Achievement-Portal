@@ -15,20 +15,25 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.conf.urls.static import static, serve
-from django.contrib import admin
-from .views import home, log_out
+from django.contrib import admin as djangoadmin
+from .views import home, log_out, change_pass, make_pdf, admin, addUsers, getUserJson
 from django.contrib.auth.views import login
 from student import urls as student_urls
 from faculty import urls as faculty_urls
 from stats import urls as stats_urls
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin),
+    url(r'^django-admin/', djangoadmin.site.urls),
+    url(r'^api/admin/addusers', addUsers),
+    url(r'^api/admin/getjson', getUserJson),
     url(r'^$',home),
     url(r'^logout/$', log_out),
     url(r'^api/student/', include(student_urls)),
     url(r'^api/faculty/', include(faculty_urls)),
-    url(r'^stats', include(stats_urls))
-    
+    url(r'^stats/', include(stats_urls)),
+    url(r'^password$',change_pass, name='change password'),
+
+    url(r'^api/student/certificate$',make_pdf, name='Certificate'),
 ]
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
