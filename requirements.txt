@@ -8,3 +8,5 @@ markdown
 django-filter
 django_extensions
 weasyprint
+numpy
+pandas
