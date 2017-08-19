@@ -83,7 +83,7 @@ export class AppComponent {
   }
 
 
-  domain_list = ['Local', 'National', 'International']
+  domain_list = ['Department', 'Institution', 'National', 'International']
   domain_query = new Set()
   addDomain(e, domain){
     if(e.checked == true)
@@ -93,9 +93,19 @@ export class AppComponent {
     console.log(this.domain_query)
     
   }
-  cat_list = ['Cultural', 'Technical', 'Sport', 'Academic', 'Other']
+  cat_list_det = {
+    'Cultural':[],
+    'Technical':['workshop', 'Conference', 'Projects', 'Other'],
+    'Sport':[], 
+    'Academic':['Addon Courses', 'Audit courses', 'Internships', 'Skill dev programs', 'Other'], 
+    'Other':[]
+  }
+
+  cat_list =  Object.keys(this.cat_list_det)
+  doc_type = ['Participation', 'Achievement']
   cat_query = new Set()
   addCategory(e, cat){
+  
     if(e.checked == true)
       this.cat_query.add(cat)
     else
