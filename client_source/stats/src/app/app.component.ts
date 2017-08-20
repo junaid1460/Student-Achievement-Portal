@@ -1,12 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import {AppService} from './app.service'
-import {MdSidenav} from '@angular/material'
+import {MdSidenav, MdButton} from '@angular/material'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
    cdoc_id = null;
   navinfo = null;
   @ViewChild('infonavbar') nav:MdSidenav;
@@ -84,8 +84,17 @@ export class AppComponent {
 
 
   domain_list = ['Department', 'Institution', 'National', 'International']
+  toggleAllDomain(){
+    if(this.domain_query.size == 0)
+      this.domain_list.forEach(e =>{
+        this.domain_query.add(e)
+      })
+    else
+      this.domain_query = new Set()
+  }
   domain_query = new Set()
   addDomain(e, domain){
+    
     if(e.checked == true)
       this.domain_query.add(domain)
     else
@@ -102,14 +111,37 @@ export class AppComponent {
   }
 
   cat_list =  Object.keys(this.cat_list_det)
+  toggleAllCategory(){
+    if(this.cat_query.size == 0)
+      this.cat_list.forEach(e =>{
+        this.cat_query.add(e)
+      })
+    else
+      this.cat_query = new Set()
+  }
+  sub_cat_query = {};
+  tmp_squery = {}
+  toggleSubCategory(cat){
+    if(!this.sub_cat_query[cat]){
+      console.log(cat,this.sub_cat_query[cat])
+    }
+    if(this.sub_cat_query[cat].size == 0){
+      this.cat_list_det[cat].forEach(e=>{
+        this.sub_cat_query[cat].add(e)
+      })
+    }else this.sub_cat_query[cat] = new Set()
+  }
   doc_type = ['Participation', 'Achievement']
   cat_query = new Set()
-  addCategory(e, cat){
+  addCategory(e, cat, el){
+    console.log(el)
   
-    if(e.checked == true)
-      this.cat_query.add(cat)
-    else
-      this.cat_query.delete(cat)
+    if(e.checked == true){
+      this.cat_query.add(cat);
+    }
+    else{
+      this.cat_query.delete(cat);
+    }
     console.log(this.cat_query)
   }
   year_list = [['1st year', 1], ['2nd year', 2],['3rd year', 3], ['4th year', 4]]
@@ -127,7 +159,19 @@ export class AppComponent {
       this.search()
     }
   }
-
-
+   addSubCategory(e, cat, subcat){
+    if(e.checked == true)
+      this.sub_cat_query[cat].add(subcat)
+    else
+      this.sub_cat_query[cat].delete(subcat)
+    // console.log(this.cat_query)
+  }
+  ngOnInit(){
+    console.log(this.cat_list)
+    this.cat_list.forEach(e=>{
+      this.sub_cat_query[e] = new Set()
+    })
+  console.log(this.sub_cat_query)
+  }
  
 }
