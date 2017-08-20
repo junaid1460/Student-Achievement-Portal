@@ -1,3 +1,42 @@
 .ulist .pad{
     padding: 9px
 }
+
+.form-radio-group{
+    display: inline-flex;
+    flex-direction: column
+}
+.form-radio-group md-radio-button{
+    margin:5px
+}
+.cheader{
+    margin: 2px
+}
+/deep/ .form-radio-group md-radio-button label.mat-radio-label{
+    align-items: flex-start
+}
+
+.document{
+    background: #3F51B5;
+    color: white;
+    padding: 15px;
+    border: 3px;
+    box-shadow: 0 3px 6px black;
+
+}
+.document p{
+    color:white;
+}
+.xcontent md-list{
+       padding: 10px;
+    margin: 2px;
+    background: #fbfbfb;
+    width: 100%;
+}
+/deep/ .mat-radio-checked.mat-radio-disabled .mat-radio-container .mat-radio-inner-circle
+{
+    background: gray
+}
+/deep/ .mat-radio-checked.mat-radio-disabled .mat-radio-container .mat-radio-outer-circle{
+    border-color: gray;
+}
