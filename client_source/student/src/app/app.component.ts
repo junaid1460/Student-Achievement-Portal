@@ -1,6 +1,59 @@
 import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
 import {MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA, MdSidenav} from '@angular/material'
-import {StudentService} from './app.service'
+import {StudentService} from './app.service';
+
+
+const doc_type_choce = [
+    [1,'Participation'],
+    [2,'Achievement']
+]
+
+const doc_year_choice = [
+    [1,'1st year'],
+    [2,'2nd year'],
+    [3,'3rd year'],
+    [4,'4th year']
+]
+
+const doc_domain_choice = [
+    [1, 'Department'],
+    [2, 'Institution'],
+    [3, 'National'],
+    [4, 'Internatiional'],
+    [0, 'Other'],
+]
+
+const doc_category_choice = [
+    
+    [1, 'Academic'],
+    [2, 'Technical'],
+    [3, 'Cultural'],
+    [4, 'Sport'],
+    [0, 'Other'],
+]
+
+const doc_sub_cat_choice = {
+    0:[],
+    3:[],
+    4:[],
+    2:[
+        [1, 'Work shops'],
+        [2, 'Conferences'],
+        [3, 'Projects'],
+        [4, 'Competitions'],
+        [0, 'Other']
+    ],
+    1:[
+        [5, 'Addon courses'],
+        [6, 'Audit courses'],
+        [7, 'Interships'],
+        [8, 'Skill development programs'],
+        [0, 'Other']
+    ]
+}
+
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -123,22 +176,36 @@ export class DeleteDialog {
 
 
 import {FormControl, Validators} from '@angular/forms'
+
 @Component({
   templateUrl: './upload.component.html',
   styleUrls:['./upload.component.css']
 })
 export class UploadDialog {
+  doc_types = doc_type_choce
+  doc_cats = doc_category_choice
+  doc_subs = doc_sub_cat_choice
+  doc_domains = doc_domain_choice
+  doc_years = doc_year_choice
   constructor(public dialogRef: MdDialogRef<UploadDialog>,
     private snack:MdSnackBar,
     private _aps:StudentService) {}
   @ViewChild('title') title:ElementRef;
   @ViewChild('file') file:ElementRef;
-  year:any;
+  _year:any = 1;
   _title:any;
   _date;
-  _domain:string;
-  _cat:string;
+  _domain:any = 0;
+  _cat:any = 0;
   _place:string;
+  _type:number = 1;
+  _sub_cats:any = function(){
+    var tmp = {}
+    Object.keys(doc_sub_cat_choice).forEach(e=>{
+      tmp[e] = 0
+    })
+    return tmp;
+  }()
   uploading:boolean = false;
   required = new FormControl('',[Validators.required])
   yrequired = new FormControl('',[Validators.required])
@@ -146,24 +213,30 @@ export class UploadDialog {
   crequired = new FormControl('',[Validators.required])
   yorequired = new FormControl('',[Validators.required])
   prequired = new FormControl('',[Validators.required])
-  
   upload(){
-    console.log(this._date)
-    console.log(this.title.nativeElement.value)
-    console.log(this.year)
-    console.log(this.file.nativeElement.files.length)
+    console.log("date : ",this._date)
+    console.log("title  : ",this._title,"domain : ",this._domain)
+    console.log("year  :",this._year)
+    console.log("cat  : ",this._cat,'sub : ',this._sub_cats[this._cat])
+    console.log("place : ",this._place)
+    console.log('type : ',this._type)
     var error = false
 
     if(this.file.nativeElement.files.length == 0){
-      this.snack.open('Please select a document to upload.', 'okay', {duration:4000})
+      this.snack.open('Please select a PDF document to upload.', 'okay', {duration:4000})
       error = true
+      return
     }
-    if(this.yrequired.hasError('required') || 
+    if(this.file.nativeElement.files[0].type != 'application/pdf'){
+      this.snack.open('Document is not a PDF', 'okay', {duration:4000})
+      error = true
+      return
+    }
+    console.log(this.file.nativeElement.files[0].type)
+    if(
     this.required.hasError('required')||
     this.prequired.hasError('required')||
-    this.yorequired.hasError('required')||
-    this.crequired.hasError('required')||
-    this.drequired.hasError('required')){
+    this.yorequired.hasError('required')){
       this.snack.open('Fix errors.', 'okay', {duration:4000})
       error = true
     }
@@ -177,8 +250,8 @@ export class UploadDialog {
     console.log(this.file.nativeElement.files[0].size)
     // upload here
     this.uploading = true;
-    this._aps.uploadDocument(this._title, this.year,this.file.nativeElement.files[0]
-                              , this._domain, this._cat, this._date,this._place).subscribe(e =>{
+    this._aps.uploadDocument(this._title, this._year,this.file.nativeElement.files[0]
+                              , this._domain, this._cat, this._date,this._place, this._sub_cats[this._cat], this._type).subscribe(e =>{
       this.dialogRef.close(true)
       
     }, err =>{
