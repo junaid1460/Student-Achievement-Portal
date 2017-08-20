@@ -26,7 +26,7 @@ export class StudentService{
             )
     }
 
-    uploadDocument(title, year, file, dom, cat, date:Date, place:string){
+    uploadDocument(title, year, file, dom, cat, date:Date, place:string, sub_cat, type){
         let headers = new Headers({  
             'X-CSRFToken': this.getCSRF_TOKEN(),
         });
@@ -44,6 +44,8 @@ export class StudentService{
         data.append('_place',place)
         data.append('_has_error','0')
         data.append('_error_message','')
+        data.append('_sub_cat',sub_cat)
+        data.append('_type', type)
         return this._http.post('/api/student/docs',data,req)
     }
     changePass(cpass,npass){
