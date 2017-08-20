@@ -31,38 +31,53 @@ md-sidenav-container(class="sidenav")
                 
     md-toolbar
         span Stats
-    md-sidenav(mode="side", opened="true", class="options",style="width:400px")
-        md-list(class="filters")
+    md-sidenav(mode="side", opened="true", class="options",style="width:350px")
+        md-list(class = "filters")
+            li
+                h4 Filters
             
             li
-                md-input-container(style="width:100%")
-                    input(mdInput,[(ngModel)]="val", placeholder="search", (keydown)="check($event)")
-                    button(mdSuffix, md-icon-button, (click)="search()")
-                        md-icon search
-                    button(mdSuffix, md-icon-button, (click)="addVal()")
-                        md-icon add
-               
-            li
-                p(md-subheader) And Domain
+                p(md-subheader) Domain
+                    button(md-button,style="position:absolute;right:0",(click)="toggleAllDomain()")
+                        span toggle
+                        md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let d of domain_list")
-                        md-checkbox((change)="addDomain($event, d)",color="primary") {{d}}
+                        md-checkbox((change)="addDomain($event, d)",[checked]="domain_query.has(d)",color="primary") {{d}}
                     
             li
-                p(md-subheader) And Category
+                p(md-subheader) Category
+                    button(md-button,style="position:absolute;right:0", (click)="toggleAllCategory()")
+                        span toggle
+                        md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let c of cat_list")
-                        md-checkbox((change)="addCategory($event, c)",color="primary") {{c}}
-                    
+                        md-checkbox(#x,[checked]="cat_query.has(c)", (change)="addCategory($event, c,x)",color="primary") {{c}}
+                        div(*ngIf="cat_list_det[c].length != 0",style="margin-left:20px")
+                            p(md-subheader) Options
+                                button([disabled] = "!x.checked",md-button,style="position:absolute;right:0", (click)="toggleSubCategory(c)")
+                                    span toggle
+                                    md-icon done
+                            li(*ngFor="let sub of cat_list_det[c]") 
+                                md-checkbox([disabled] = "!x.checked",(change)="addSubCategory($event,c,sub)",[checked] = "sub_cat_query[c] && sub_cat_query[c].has(sub)", color="primary") {{sub}}
+                   
             li
-                p(md-subheader) And Academic Year
+                p(md-subheader) Academic Year
+                    button(md-button,style="position:absolute;right:0")
+                        span toggle
+                        md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let y of year_list")
                         md-checkbox((change)="addYear($event,y[1])",color="primary") {{y[0]}}
                     
     md-card(style="margin:10px",class="searches")
         md-card-title 
-            p(md-subheader) Keywords :
+            md-input-container(style="width:100%")
+                input(mdInput,[(ngModel)]="val", placeholder="search", (keydown)="check($event)")
+                button(mdSuffix, md-icon-button, (click)="search()")
+                    md-icon search
+                button(mdSuffix, md-icon-button, (click)="addVal()")
+                    md-icon add
         button(md-raised-button,*ngIf="usns.size == 0 && years.size == 0")
             span all
         button(md-raised-button, *ngFor="let usn of usns",(click)="usns.delete(usn)")
