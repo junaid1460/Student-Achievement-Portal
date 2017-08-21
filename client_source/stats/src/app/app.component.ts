@@ -1,12 +1,90 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import {AppService} from './app.service'
 import {MdSidenav, MdButton} from '@angular/material'
+
+
+
+
+const doc_type_choce = [
+    [1,'Participation'],
+    [2,'Achievement']
+]
+
+const doc_year_choice = [
+    [1,'1st year'],
+    [2,'2nd year'],
+    [3,'3rd year'],
+    [4,'4th year']
+]
+
+const doc_domain_choice = [
+    [1, 'Department'],
+    [2, 'Institution'],
+    [3, 'National'],
+    [4, 'International'],
+]
+
+const doc_category_choice = [
+    
+    [1, 'Academic'],
+    [2, 'Technical'],
+    [3, 'Cultural'],
+    [4, 'Sport'],
+    [0, 'Other'],
+]
+
+const doc_sub_cat_choice = {
+    0:[],
+    3:[],
+    4:[],
+    2:[
+        [1, 'Work shops'],
+        [2, 'Conferences'],
+        [3, 'Projects'],
+        [4, 'Competitions'],
+        [0, 'Other']
+    ],
+    1:[
+        [5, 'Addon courses'],
+        [6, 'Audit courses'],
+        [7, 'Interships'],
+        [8, 'Skill development programs'],
+        [0, 'Other']
+    ]
+}
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  doc_types = doc_type_choce;
+  doc_domains = doc_domain_choice;
+  doc_cats = doc_category_choice;
+  doc_sub_cats = doc_sub_cat_choice;
+  doc_year = doc_year_choice;
+  type_query = new Set()
+  myresult:number = 0
+   addType(e, domain){
+    
+    if(e.checked == true)
+      this.type_query.add(domain)
+    else
+      this.type_query.delete(domain)
+    console.log(this.type_query)
+    
+  }
+
+  toggleAllTypes(){
+    if(this.type_query.size == 0){
+      this.doc_types.forEach(e =>{
+        this.type_query.add(e[0])
+      })
+    }
+    else this.type_query = new Set()
+  }
    cdoc_id = null;
   navinfo = null;
   @ViewChild('infonavbar') nav:MdSidenav;
@@ -49,13 +127,39 @@ export class AppComponent implements OnInit {
   }
   docs = []
   nextpage = null
-  count = 0
+  count = 0;
+  students = []
+  snextpage = null
+  scount = 0
   search(){
     var keys = this.getArray(this.years).concat(this.getArray(this.usns))
     var domains = this.getArray(this.domain_query)
     var cats = this.getArray(this.cat_query)
     var years = this.getArray(this.year_query)
-    this._aps.getDocs(keys, domains, cats, years).subscribe(e=>{
+    var types = this.getArray(this.type_query)
+    let subcats = new Set()
+    cats.forEach(e => {
+      console.log('cat',e)
+      console.log(this.sub_cat_query[e])
+      this.getArray(this.sub_cat_query[e]).forEach(t =>{
+        subcats.add(t)
+      })
+    })
+    console.log(keys, domains, cats, years, subcats,types)
+    // if(true == true)return;
+    if(this.myresult == 1)
+    this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats), true).subscribe(e=>{
+      console.log(e.json())
+       var t  =e.json()
+       this.students = []
+      t.results.forEach(e=>{
+        this.students.push(e)
+      })
+      this.snextpage = t.next
+      this.scount = t.count
+    })
+    else{
+      this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats)).subscribe(e=>{
       console.log(e.json())
        var t  =e.json()
        this.docs = []
@@ -64,8 +168,8 @@ export class AppComponent implements OnInit {
       })
       this.nextpage = t.next
       this.count = t.count
-
     })
+    }
   }
  getDate(str){
     return new Date(str).toDateString()
@@ -81,13 +185,23 @@ export class AppComponent implements OnInit {
      console.log("error", e)
    })
   }
-
+loadMores(link){
+   this._aps.loadMore(link).subscribe(e=>{
+      var t  =e.json()
+      t.results.forEach(e=>{
+        this.students.push(e)
+      })
+      this.snextpage = t.next
+   }, e=>{
+     console.log("error", e)
+   })
+  }
 
   domain_list = ['Department', 'Institution', 'National', 'International']
   toggleAllDomain(){
     if(this.domain_query.size == 0)
-      this.domain_list.forEach(e =>{
-        this.domain_query.add(e)
+      this.doc_domains.forEach(e =>{
+        this.domain_query.add(e[0])
       })
     else
       this.domain_query = new Set()
@@ -102,6 +216,7 @@ export class AppComponent implements OnInit {
     console.log(this.domain_query)
     
   }
+
   cat_list_det = {
     'Cultural':[],
     'Technical':['workshop', 'Conference', 'Projects', 'Other'],
@@ -113,8 +228,8 @@ export class AppComponent implements OnInit {
   cat_list =  Object.keys(this.cat_list_det)
   toggleAllCategory(){
     if(this.cat_query.size == 0)
-      this.cat_list.forEach(e =>{
-        this.cat_query.add(e)
+      this.doc_cats.forEach(e =>{
+        this.cat_query.add(e[0])
       })
     else
       this.cat_query = new Set()
@@ -126,8 +241,8 @@ export class AppComponent implements OnInit {
       console.log(cat,this.sub_cat_query[cat])
     }
     if(this.sub_cat_query[cat].size == 0){
-      this.cat_list_det[cat].forEach(e=>{
-        this.sub_cat_query[cat].add(e)
+      this.doc_sub_cats[cat].forEach(e=>{
+        this.sub_cat_query[cat].add(e[0])
       })
     }else this.sub_cat_query[cat] = new Set()
   }
@@ -153,6 +268,15 @@ export class AppComponent implements OnInit {
       this.year_query.delete(year)
     console.log(this.year_query)
   }
+
+  toggleAllYears(){
+    if(this.year_query.size == 0){
+      this.doc_year.forEach(e =>{
+        this.year_query.add(e[0])
+      })
+
+    }else this.year_query = new Set()
+  }
   check($event){
     if($event.keyCode == 13){
       this.addVal()
@@ -168,8 +292,8 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(){
     console.log(this.cat_list)
-    this.cat_list.forEach(e=>{
-      this.sub_cat_query[e] = new Set()
+    this.doc_cats.forEach(e=>{
+      this.sub_cat_query[e[0]] = new Set()
     })
   console.log(this.sub_cat_query)
   }
