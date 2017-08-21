@@ -16,9 +16,29 @@ class ExtSerializer(serializers.ModelSerializer):
 
 class DocStatsSerializer(serializers.ModelSerializer):
     _user = ExtSerializer()
+    _domain = serializers.SerializerMethodField()
+    _category = serializers.SerializerMethodField()
+    _year = serializers.SerializerMethodField()
+    _type = serializers.SerializerMethodField()
+    _sub_cat = serializers.SerializerMethodField()
+
     class Meta:
         model = Document
-        depth = 1
-        fields = ('_user','_file','_domain','_category',
+        fields = ('_user', '_file','_domain','_category', '_type',
         '_event_time','_place', '_title','_year','_verified',
-        '_created_at', )
+        '_sub_cat', '_created_at', '_has_error', '_error_message')
+    def get__domain(self, obj):
+        return obj.get__domain_display()
+    def get__category(self, obj):
+        return obj.get__category_display()
+    def get__year(self, obj):
+        return obj.get__year_display()
+    def get__type(self, obj):
+        return obj.get__type_display()
+    def get__sub_cat(self, obj):
+        return obj.get__sub_cat_display()
+
+class StudentStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','username', 'first_name', 'last_name')
