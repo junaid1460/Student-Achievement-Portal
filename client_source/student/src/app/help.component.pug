@@ -1,10 +1,23 @@
-div(style="width:40vw")
+div(style="width:70vw")
     h2(md-dialog-title) Help
     md-dialog-content
-        h3 Certificate verification portal
-        p Designed to upload and verify achievements of students. 
-        h3 How to use?
-        p Upload the documents with proper informations and wait for the documents to get verified. You can delete the document if it is not verified. Once verified the Certificate can be downloaded by pressing the button available on top right of page
+        div(class="helps") 
+            md-card
+                md-card-title Uploading documents.
+                md-card-content
+                    span click on 
+                    button(md-icon-button,style="color: #ffffff;background: #3f51b5;")
+                        md-icon file_upload
+                    span  button on the bottom-right corner of window.
+                    span This will open a dialog for uploading document.
+            md-card
+                md-card-title change password
+                md-card-content
+                    span click on 
+                    button(md-icon-button,)
+                        md-icon more_vert
+                    span  button on the bottom-right corner of window.
+                    span This will open a dialog to change you password.
 
     
     md-dialog-actions
