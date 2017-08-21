@@ -26,3 +26,9 @@
 .dc .doc:nth-child(even){
     background: #e0e0e0
 }
+
+.dc .doc{
+    background: white;
+    margin: 5px;
+    border-radius: 2px;
+}
