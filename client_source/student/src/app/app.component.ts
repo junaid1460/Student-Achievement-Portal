@@ -19,8 +19,7 @@ const doc_domain_choice = [
     [1, 'Department'],
     [2, 'Institution'],
     [3, 'National'],
-    [4, 'Internatiional'],
-    [0, 'Other'],
+    [4, 'International'],
 ]
 
 const doc_category_choice = [
@@ -195,7 +194,7 @@ export class UploadDialog {
   _year:any = 1;
   _title:any;
   _date;
-  _domain:any = 0;
+  _domain:any = 1;
   _cat:any = 0;
   _place:string;
   _type:number = 1;
@@ -264,7 +263,8 @@ export class UploadDialog {
 
 
 @Component({
-  templateUrl: './help.component.html'
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.css']
 })
 export class HelpDialog {
   constructor(public dialogRef: MdDialogRef<HelpDialog>) {}
