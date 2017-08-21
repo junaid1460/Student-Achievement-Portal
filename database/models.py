@@ -21,11 +21,10 @@ doc_year_choice = (
 )
 
 doc_domain_choice = (
-    (0, 'Other'),
     (1, 'Department'),
     (2, 'Institution'),
     (3, 'National'),
-    (4, 'Internatiional')
+    (4, 'International')
 )
 
 doc_category_choice = (
@@ -57,18 +56,18 @@ class Document(models.Model):
     _user = models.ForeignKey(Extended) #belongs to which user?
     _file = models.FileField() # document
     _title = models.CharField(max_length = 1000, default = '') #title of achievement
-    _year = models.IntegerField(choices=doc_year_choice,default=0) #academic year ()
+    _year = models.IntegerField(choices=doc_year_choice) #academic year ()
     _place = models.CharField(max_length = 400, default="") #place if needed
     _created_at = models.DateTimeField(auto_now_add=True) #automatic created date field
     _verified = models.BooleanField(default= False) # whether verified or not
 
-    _domain = models.IntegerField(choices=doc_domain_choice, default=0) #national, international, local etc.
-    _category = models.IntegerField(choices=doc_category_choice, default = 0) #academic, cultural or sport
-    _sub_cat = models.IntegerField(choices=doc_sub_cat_choice, default=0) #sub category
+    _domain = models.IntegerField(choices=doc_domain_choice) #national, international, local etc.
+    _category = models.IntegerField(choices=doc_category_choice) #academic, cultural or sport
+    _sub_cat = models.IntegerField(choices=doc_sub_cat_choice) #sub category
     # _avail_for_verification = models.BooleanField(default= False) #whether sent for verification or not
     _has_error = models.BooleanField(default = False)
     _error_message = models.CharField(max_length = 2000, default="")
-    _type = models.IntegerField(choices=doc_type_choce,default=1)
+    _type = models.IntegerField(choices=doc_type_choce)
     def __str__(self):
         return self._title
 
