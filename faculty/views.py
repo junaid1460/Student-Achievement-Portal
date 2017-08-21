@@ -11,18 +11,23 @@ class StudentListView(generics.ListAPIView):
     serializer_class = StudentSerializer
     def get_queryset(self):
         # tmp = Extended.objects.filter(type='S').values('user')
-        tmp = Document.objects.filter(_verified = False).only('_user').distinct().values('_user')
-        return User.objects.filter(id__in = tmp)
+        tmp =  Document.objects.filter(_verified = False)
+        x = tmp.only('_user__user__id').distinct().values('_user__user__id')
+        
+      
+        return User.objects.filter(id__in  = x)
 
 class StudentDocumentListView(generics.ListAPIView):
     serializer_class = DocumentSerializer
     def get_queryset(self):
+        id = -1
         try:
             id = self.request.GET['id']
             print(id)
         except BaseException:
             id = -1
-        return Document.objects.filter(_user = id)
+        print(Document.objects.filter(_user = id), id)
+        return Document.objects.filter(_user__user__id = id)
 
 
 
@@ -86,6 +91,11 @@ def setErrorMessage(request):
 
         doc._has_error = True
         doc._error_message = message
+        try:
+            doc._verified = False
+            doc.verifieddoc.delete()
+        except BaseException:
+            pass
         doc.save()
         return JsonResponse({'status' : 'Worked!'})
 
