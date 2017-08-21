@@ -15,6 +15,15 @@ md-sidenav-container(class = "sidebar")
           p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
           h4(md-line) {{ getDate(navinfo._created_at)}}
         md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Place
+          h4(md-line) {{navinfo._place}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Type
+          h4(md-line) {{navinfo._type}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Event date
+          h4(md-line) {{getDate(navinfo._event_time)}}
+        md-list-item
           p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
           h4(md-line) {{navinfo._year}}
         md-list-item
@@ -23,6 +32,10 @@ md-sidenav-container(class = "sidebar")
         md-list-item
           p(md-line,md-subheader,style="height:auto;font-size:12px") Category
           h4(md-line) {{navinfo._category}}
+        md-list-item
+          p(md-line,md-subheader,style="height:auto;font-size:12px") Sub category
+          h4(md-line) {{navinfo._sub_cat}}
+        
         md-list-item(*ngIf="navinfo._has_error")
           p(md-line,md-subheader,style="height:auto;font-size:12px;color:red") Error
           h4(md-line,style="color:red") {{navinfo._error_message}}
@@ -53,9 +66,9 @@ md-sidenav-container(class = "sidebar")
     div(style="width:100%;display:flex;justify-content:space-between")
       span Certification portal 
       div
-        a(md-raised-button,style="background:#e8e8e8",href="/api/student/certificate", target="_blank") 
-          md-icon file_download
-          span  Certificate
+        //- a(md-raised-button,style="background:#e8e8e8",href="/api/student/certificate", target="_blank") 
+        //-   md-icon file_download
+        //-   span  Certificate
         button(md-raised-button,style="background:#e8e8e8",(click)="logout()") logout
         button(md-icon-button,[mdMenuTriggerFor]="menu")
           md-icon more_vert
