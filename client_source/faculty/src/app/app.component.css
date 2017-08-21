@@ -14,3 +14,7 @@
 .dc md-list-item.doc:nth-child(even){
     background: #e0e0e0
 }
+
+.navlist md-list-item:nth-child(even){
+    background: #e0e0e0
+}
