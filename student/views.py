@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, Http404
 from django.http import JsonResponse
 from rest_framework import generics, views
-from .serializers import DocumentSerializer
+from .serializers import DocumentSerializer, DocumentSetSerializer
 from database.models import Document
 from rest_framework.parsers import FileUploadParser,MultiPartParser,FormParser
 import os
@@ -13,11 +13,19 @@ class DocumentListView(generics.ListCreateAPIView):
     serializer_class = DocumentSerializer
     parser_classes = (FormParser, MultiPartParser)
     def perform_create(self, serializer):
+        print(self.request.POST)
         serializer.save(_user = self.request.user.extended)
         
     def get_queryset(self):
         
         return Document.objects.filter(_user = self.request.user.extended)
+
+class DocumentSetView(generics.CreateAPIView):
+    serializer_class = DocumentSetSerializer
+    parser_classes = (FormParser, MultiPartParser)
+    def perform_create(self, serializer):
+        serializer.save(_user = self.request.user.extended)
+        
 
 def delete(req):
     if req.user.is_authenticated():
