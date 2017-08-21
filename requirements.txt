@@ -10,3 +10,4 @@ django_extensions
 weasyprint
 numpy
 pandas
+django-decorator-include
