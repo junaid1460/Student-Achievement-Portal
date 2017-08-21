@@ -21,16 +21,55 @@ from django.contrib.auth.views import login
 from student import urls as student_urls
 from faculty import urls as faculty_urls
 from stats import urls as stats_urls
+from decorator_include import decorator_include
+from django.http import JsonResponse, Http404
+
+
+def student_required(function):
+    def wrapper(request, *args, **kw):
+        if request.user.is_authenticated():
+            if request.user.extended.type != 'S':
+                return JsonResponse({})
+            else:
+                return function(request, *args, **kw)
+        else:
+            return JsonResponse({})
+    return wrapper
+
+def faculty_required(function):
+    def wrapper(request, *args, **kw):
+        if request.user.is_authenticated():
+            if request.user.extended.type != 'F':
+                return JsonResponse({})
+            else:
+                return function(request, *args, **kw)
+        else:
+            return JsonResponse({})
+    return wrapper
+
+def superuser_required(function):
+    def wrapper(request, *args, **kw):
+        if request.user.is_authenticated():
+            if not request.user.is_superuser:
+                raise Http404
+            else:
+                return function(request, *args, **kw)
+        else:
+            return JsonResponse({})
+    return wrapper
+
+
+
 urlpatterns = [
     url(r'^admin/', admin),
-    url(r'^django-admin/', djangoadmin.site.urls),
+    url(r'^django-admin/', decorator_include(superuser_required,djangoadmin.site.urls)),
     url(r'^api/admin/addusers', addUsers),
     url(r'^api/admin/getjson', getUserJson),
     url(r'^$',home),
     url(r'^logout/$', log_out),
-    url(r'^api/student/', include(student_urls)),
-    url(r'^api/faculty/', include(faculty_urls)),
-    url(r'^stats/', include(stats_urls)),
+    url(r'^api/student/', decorator_include(student_required, include(student_urls))),
+    url(r'^api/faculty/', decorator_include(faculty_required, include(faculty_urls))),
+    url(r'^stats/', decorator_include(superuser_required,include(stats_urls))),
     url(r'^password$',change_pass, name='change password'),
 
     url(r'^api/student/certificate$',make_pdf, name='Certificate'),
