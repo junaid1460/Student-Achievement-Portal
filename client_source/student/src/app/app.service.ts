@@ -46,7 +46,7 @@ export class StudentService{
         data.append('_error_message','')
         data.append('_sub_cat',sub_cat)
         data.append('_type', type)
-        return this._http.post('/api/student/docs',data,req)
+        return this._http.post('/api/student/docs/upload',data,req)
     }
     changePass(cpass,npass){
         let headers = new Headers({  
