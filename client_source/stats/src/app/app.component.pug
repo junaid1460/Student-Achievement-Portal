@@ -1,40 +1,40 @@
 
 md-sidenav-container(class="sidenav",style="background: #3F51B5;")
     md-sidenav(#infonavbar,#inf,style="width:350px;height:auto;background:white;color:black", mode="over", align="end")
-        div(class="", *ngIf="navinfo!=null")
+        div(class="", *ngIf="_aps.navinfo!=null")
             md-list(class="navlist")
                 h3(md-subheader) Information
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Student
-                    h4(md-line) {{navinfo._user.user.username}}, {{navinfo._user.user.first_name }} {{navinfo._user.user.last_name }} 
+                    h4(md-line) {{_aps.navinfo._user.user.username}}, {{_aps.navinfo._user.user.first_name }} {{_aps.navinfo._user.user.last_name }} 
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") title
-                    h4(md-line) {{navinfo._title}}
+                    h4(md-line) {{_aps.navinfo._title}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Status
-                    h4(*ngIf="!navinfo._verified == true",md-line) Waiting to get verified
-                    h4(*ngIf="navinfo._verified == true", md-line) Verified
+                    h4(*ngIf="!_aps.navinfo._verified == true",md-line) Waiting to get verified
+                    h4(*ngIf="_aps.navinfo._verified == true", md-line) Verified
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
-                    h4(md-line) {{ getDate(navinfo._created_at)}}
+                    h4(md-line) {{ getDate(_aps.navinfo._created_at)}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
-                    h4(md-line) {{navinfo._year}}
+                    h4(md-line) {{_aps.navinfo._year}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Domain
-                    h4(md-line) {{navinfo._domain}}
+                    h4(md-line) {{_aps.navinfo._domain}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Category
-                    h4(md-line) {{navinfo._category}}
+                    h4(md-line) {{_aps.navinfo._category}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Place
-                    h4(md-line) {{navinfo._place}}
+                    h4(md-line) {{_aps.navinfo._place}}
                 
     md-toolbar(style="background:#3F51B5;color:white")
         span Stats
         div(style="width:100%")
         a(md-raised-button, href="/",style="color:black") Home
-    md-sidenav(mode="side", opened="true", class="options",style="width:350px")
+    md-sidenav(mode="side", opened="true", class="options",style="width:400px")
         md-list(class = "filters")
             li
                 h4 Filters
@@ -45,7 +45,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                         md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let d of doc_types")
-                        md-checkbox((change)="addType($event, d[0])",[checked]="type_query.has(d[0])",color="primary") {{d[1]}}
+                        md-checkbox((change)="addType($event, d[0])",[checked]="_aps.type_query.has(d[0])",color="primary") {{d[1]}}
             li
                 p(md-subheader) Domain
                     button(md-button,style="position:absolute;right:0",(click)="toggleAllDomain()")
@@ -53,7 +53,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                         md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let d of doc_domains")
-                        md-checkbox((change)="addDomain($event, d[0])",[checked]="domain_query.has(d[0])",color="primary") {{d[1]}}
+                        md-checkbox((change)="addDomain($event, d[0])",[checked]="_aps.domain_query.has(d[0])",color="primary") {{d[1]}}
                     
             li
                 p(md-subheader) Category
@@ -62,14 +62,14 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                         md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let c of doc_cats")
-                        md-checkbox(#x,[checked]="cat_query.has(c[0])", (change)="addCategory($event, c[0],x)",color="primary") {{c[1]}}
+                        md-checkbox(#x,[checked]="_aps.cat_query.has(c[0])", (change)="addCategory($event, c[0],x)",color="primary") {{c[1]}}
                         div(*ngIf="doc_sub_cats[c[0]].length != 0",style="margin-left:20px")
                             p(md-subheader) Options
                                 button([disabled] = "!x.checked",md-button,style="position:absolute;right:0", (click)="toggleSubCategory(c[0])")
                                     span toggle
                                     md-icon done
                             li(*ngFor="let sub of doc_sub_cats[c[0]]") 
-                                md-checkbox([disabled] = "!x.checked",(change)="addSubCategory($event,c[0],sub[0])",[checked] = "sub_cat_query[c[0]] && sub_cat_query[c[0]].has(sub[0])", color="primary") {{sub[1]}}
+                                md-checkbox([disabled] = "!x.checked",(change)="addSubCategory($event,c[0],sub[0])",[checked] = "_aps.sub_cat_query[c[0]] && _aps.sub_cat_query[c[0]].has(sub[0])", color="primary") {{sub[1]}}
                    
             li
                 p(md-subheader) Academic Year
@@ -78,7 +78,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                         md-icon done
                 ul(class="filter-options")
                     li(*ngFor="let y of year_list")
-                        md-checkbox((change)="addYear($event,y[1])",color="primary", [checked]="year_query.has(y[1])") {{y[0]}}
+                        md-checkbox((change)="addYear($event,y[1])",color="primary", [checked]="_aps.year_query.has(y[1])") {{y[0]}}
                     
     md-card(style="margin:10px",class="searches")
         md-card-title 
@@ -88,12 +88,12 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                     md-icon search
                 button(mdSuffix, md-icon-button, (click)="addVal()")
                     md-icon add
-        button(md-raised-button,*ngIf="usns.size == 0 && years.size == 0")
+        button(md-raised-button,*ngIf="_aps.usns.size == 0 && _aps.years.size == 0")
             span all
-        button(md-raised-button, *ngFor="let usn of usns",(click)="usns.delete(usn)")
+        button(md-raised-button, *ngFor="let usn of _aps.usns",(click)="_aps.usns.delete(usn)")
             span {{ usn }}
             md-icon close
-        button(md-raised-button, *ngFor="let year of years", color="primary",(click)="years.delete(year)")
+        button(md-raised-button, *ngFor="let year of _aps.years", color="primary",(click)="_aps.years.delete(year)")
                 span {{ year }}
                 md-icon close 
         md-card-actions(style="display:flex;flex-direction:row-reverse")
@@ -101,17 +101,17 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
             button(md-button, (click)="search()") search
                 md-icon search
             
-            md-select([(ngModel)]="myresult",style="margin-top:15px")
+            md-select([(ngModel)]="_aps.myresult",style="margin-top:15px",(change)="search()")
                 md-option([value] = "0") Documents
                 md-option([value] = "1") Students 
             span(md-subheader,style="margin: 7px;color: #607D8B;") Show what?
             
 
-    md-list(class="dc",*ngIf="myresult == 0")
+    md-list(class="dc",*ngIf="_aps.myresult == 0")
         h4(md-subheader,style="color:white") Files 
-        h3(md-subheader,style="color:white") Total results : {{ count }}
+        h3(md-subheader,style="color:white") Total results : {{ _aps.count }}
         
-        md-list-item(*ngFor="let file of docs",class="doc")
+        md-list-item(*ngFor="let file of _aps.docs",class="doc")
             md-icon(md-list-icon) insert_drive_file
             //- md-icon(md-list-icon) insert_drive_file
             div(style="margin-left:10px;width:100%")
@@ -131,31 +131,36 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
           
             button(md-icon-button, (click) = "showInfo(file)",  mdTooltip="Information")
                 md-icon(md-icon) info
-        md-list-item(*ngIf="docs.length == 0")
+        md-list-item(*ngIf="_aps.docs.length == 0")
             div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
                 h1(style="width:100%;text-align:center;color:white") Nothing to show
                 p(style="color:white") Search on
         div(style="display:flex;justify-content:center")
-            button(md-raised-button, *ngIf="nextpage != null", (click)="loadMore(nextpage)") load more
+            button(md-raised-button, *ngIf="_aps.nextpage != null", (click)="loadMore(_aps.nextpage)") load more
                 md-icon cloud_download
         
         div(style="height:100px")
-    md-list(class="dc",*ngIf="myresult == 1")
+    md-list(class="dc",*ngIf="_aps.myresult == 1")
         h4(md-subheader,style="color:white") Students
-        h3(md-subheader,style="color:white") Total results : {{ scount }}
-        md-list-item(*ngFor="let student of students",class="doc")
+        h3(md-subheader,style="color:white") Total results : {{ _aps.scount }}
+        md-list-item(*ngFor="let student of _aps.students",class="doc")
             md-icon(md-list-icon) cloud_download
             //- md-icon(md-list-icon) insert_drive_file
-            div(style="margin-left:10px;width:100%")
-                h4(md-line) {{student.username}}
-                p(md-line) {{student.first_name}}{{student.last_name}}
-            button(md-icon-button)
-                md-icon info
-        md-list-item(*ngIf="students.length == 0")
+            div(style="margin-left:10px;width:100%;display:flex;justify-content:space-between")
+                div
+                    h4(md-line) {{student.username}}
+                    p(md-line) {{student.first_name}}{{student.last_name}}
+                div
+                    a(md-button, [routerLink]="['student/' + student.username]", mdTooltip="Show all documents of {{student.username}}.")
+                        span Show all
+                        //- md-icon info
+                    a(md-button, [routerLink]="['student/' + student.username+'/'+ _aps.getSearchB64()]", mdTooltip="show all documents of {{student.username}} for this search.")
+                        span List
+        md-list-item(*ngIf="_aps.students.length == 0")
             div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
                 h1(style="width:100%;text-align:center;color:white") Nothing to show
                 p(style="color:white") Search on
         div(style="display:flex;justify-content:center")
-            button(md-raised-button, *ngIf="snextpage != null", (click)="loadMores(snextpage)") load more
+            button(md-raised-button, *ngIf="_aps.snextpage != null", (click)="loadMores(_aps.snextpage)") load more
                 md-icon cloud_download
 
