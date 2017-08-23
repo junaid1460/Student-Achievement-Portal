@@ -9,12 +9,20 @@ import json
 from django.http import JsonResponse
 from .serializers import DocStatsSerializer, StudentStatsSerializer
 from database.models import User
+from student.serializers import DocumentSerializer
 # Create your views here.
 
 def stats_view(req):
     return render(req, d.stats_template, {})
 
+class StudentView(generics.ListAPIView):
+    serializer_class = DocumentSerializer
 
+    def get_queryset(self):
+        try:
+            return Document.objects.filter(_user__user__username = self.request.GET['user'])
+        except BaseException:
+            return []
                     
 
 class StatsListing(generics.ListAPIView):
@@ -194,3 +202,11 @@ class StudentStatsListing(generics.ListAPIView):
         if res is None:
             return User.objects.filter(id__in = current.filter(_verified=True).only('_user').distinct().values('_user'))
         return User.objects.filter(id__in = res.filter(_verified=True).only('_user').distinct().values('_user'))
+
+
+class CurrentStudentList(generics.ListAPIView):
+    serializer_class = DocumentSerializer
+    def get_queryset(self):
+        
+        print(self.request.GET)
+        return Document.objects.all()
