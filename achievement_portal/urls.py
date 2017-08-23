@@ -21,6 +21,7 @@ from django.contrib.auth.views import login
 from student import urls as student_urls
 from faculty import urls as faculty_urls
 from stats import urls as stats_urls
+from stats.views import stats_view
 from decorator_include import decorator_include
 from django.http import JsonResponse, Http404
 
@@ -68,8 +69,9 @@ urlpatterns = [
     url(r'^$',home),
     url(r'^logout/$', log_out),
     url(r'^api/student/', decorator_include(student_required, include(student_urls))),
+    url(r'^stats/', stats_view),
     url(r'^api/faculty/', decorator_include(faculty_required, include(faculty_urls))),
-    url(r'^stats/', decorator_include(superuser_required,include(stats_urls))),
+    url(r'^api/stats/', decorator_include(superuser_required,include(stats_urls))),
     url(r'^password$',change_pass, name='change password'),
 
     url(r'^api/student/certificate$',make_pdf, name='Certificate'),
