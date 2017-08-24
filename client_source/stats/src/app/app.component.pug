@@ -6,10 +6,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                 h3(md-subheader) Information
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Student
-                    h4(md-line) {{_aps.navinfo._user.user.username}}, {{_aps.navinfo._user.user.first_name }} {{_aps.navinfo._user.user.last_name }} 
-                md-list-item
-                    p(md-line,md-subheader,style="height:auto;font-size:12px") title
-                    h4(md-line) {{_aps.navinfo._title}}
+                    h4(md-line) {{_aps.navinfo._user.user.username}}, {{_aps.navinfo._user.user.first_name}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Status
                     h4(*ngIf="!_aps.navinfo._verified == true",md-line) Waiting to get verified
@@ -17,6 +14,15 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Uploaded on
                     h4(md-line) {{ getDate(_aps.navinfo._created_at)}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Place
+                    h4(md-line) {{_aps.navinfo._place}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Type
+                    h4(md-line) {{_aps.navinfo._type}}
+                md-list-item
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Event date
+                    h4(md-line) {{getDate(_aps.navinfo._event_time)}}
                 md-list-item
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Academic year
                     h4(md-line) {{_aps.navinfo._year}}
@@ -27,8 +33,12 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                     p(md-line,md-subheader,style="height:auto;font-size:12px") Category
                     h4(md-line) {{_aps.navinfo._category}}
                 md-list-item
-                    p(md-line,md-subheader,style="height:auto;font-size:12px") Place
-                    h4(md-line) {{_aps.navinfo._place}}
+                    p(md-line,md-subheader,style="height:auto;font-size:12px") Sub category
+                    h4(md-line) {{_aps.navinfo._sub_cat}}
+                
+                md-list-item(*ngIf="_aps.navinfo._has_error")
+                    p(md-line,md-subheader,style="height:auto;font-size:12px;color:red") Error
+                    h4(md-line,style="color:red") {{_aps.navinfo._error_message}}
                 
     md-toolbar(style="background:#3F51B5;color:white")
         span Stats
@@ -101,10 +111,13 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
             button(md-button, (click)="search()") search
                 md-icon search
             
-            md-select([(ngModel)]="_aps.myresult",style="margin-top:15px",(change)="search()")
+            md-select([(ngModel)]="_aps.myresult",style="margin-top:15px",(change)="search()",placeholder="Show what?")
                 md-option([value] = "0") Documents
                 md-option([value] = "1") Students 
-            span(md-subheader,style="margin: 7px;color: #607D8B;") Show what?
+            //- span(md-subheader,style="margin: 7px;color: #607D8B;") Show what?
+            md-select([(ngModel)]="_aps.sortby",placeholder="Sort By", style="margin:5px;margin-top:15px" )
+                md-option(*ngFor="let opt of doc_sort_options", [value]="opt[0]") {{opt[1]}}
+                
             
 
     md-list(class="dc",*ngIf="_aps.myresult == 0")
@@ -152,10 +165,12 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                     p(md-line) {{student.first_name}}{{student.last_name}}
                 div
                     a(md-button, [routerLink]="['student/' + student.username]", mdTooltip="Show all documents of {{student.username}}.")
-                        span Show all
+                        span Show all 
+                        md-icon show_chart
                         //- md-icon info
-                    a(md-button, [routerLink]="['student/' + student.username+'/'+ _aps.getSearchB64()]", mdTooltip="show all documents of {{student.username}} for this search.")
+                    a(md-button, [routerLink]="['student/' + student.username+'/'+ _aps.getSearchB64()]", mdTooltip="show all documents of {{student.username}} for current filter.")
                         span List
+                        md-icon info
         md-list-item(*ngIf="_aps.students.length == 0")
             div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
                 h1(style="width:100%;text-align:center;color:white") Nothing to show
