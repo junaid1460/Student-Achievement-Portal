@@ -1,6 +1,7 @@
 import {Component} from '@angular/core'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute,Router} from '@angular/router'
 import { AppService } from './app.service'
+import { Location} from '@angular/common'
 import { Headers } from '@angular/http'
 @Component({
     templateUrl :'./student.component.search.html',
@@ -14,11 +15,13 @@ export class StudentSearchComponent{
     return new Date(str).toDateString()
   }
 goback(){
-    
+    this.loc.back()
 }
-    constructor(private route:ActivatedRoute, private aps:AppService ){
+    constructor(private route:ActivatedRoute, private aps:AppService,private loc:Location ){
+        
         route.params.subscribe(p =>{
            console.log("query", p)
+           this.user = p.username
             var t = atob(p.search)
             var tmp = JSON.parse(t);
             tmp['keys'] = [p.username]
