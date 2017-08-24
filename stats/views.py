@@ -43,37 +43,32 @@ class StatsListing(generics.ListAPIView):
         years = data['years']
         domains = data['domains']
         types = data['types']
-        subcats = data['subcat']
+        subcats = set(data['subcat'] + [0])
+        sortby = data['sortby']
         # print(data)
         # return Document.objects.all()
-        tmp  =None
+        try:
+            if sortby != '':
+                tmp = Document.objects.order_by(sortby)
+            else:
+                tmp = Document.objects.all() 
+        except BaseException:
+            tmp = Document.objects.all() 
+            
         if len(domains) != 0:
-            tmp = Document.objects.filter(_domain__in  = domains)
-        if len(cats) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_category__in  = cats)
-            else:
-                tmp = (tmp & Document.objects.filter(_category__in  = cats))
-        if len(years) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_year__in  = years)
-            else:
-                tmp = (tmp & Document.objects.filter(_year__in  = years))
+            tmp = tmp.filter(_domain__in  = domains)
         if len(subcats) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_sub_cat__in  = subcats)
-            else:
-                tmp = (tmp & Document.objects.filter(_sub_cat__in  = subcats))
+            tmp = tmp.filter(_sub_cat__in  = subcats)
+        if len(cats) != 0:
+            tmp = tmp.filter(_category__in  = cats)
+        if len(years) != 0:
+            tmp = tmp.filter(_year__in  = years)
+        
         if len(types) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_type__in  = types)
-            else:
-                tmp = (tmp & Document.objects.filter(_type__in  = types))
+            tmp = tmp.filter(_type__in  = types)
         
         print(tmp)
         #keys
-        if tmp is None:
-            tmp = Document.objects.all()
         current = tmp
         res = None
         if len(keys) > 0:
@@ -115,7 +110,7 @@ class StatsListing(generics.ListAPIView):
 class StudentStatsListing(generics.ListAPIView):
     
     serializer_class = StudentStatsSerializer
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [SearchFilter]
 
     pagination_class = StatsPaginator
     def get_queryset(self):
@@ -131,37 +126,31 @@ class StudentStatsListing(generics.ListAPIView):
         years = data['years']
         domains = data['domains']
         types = data['types']
-        subcats = data['subcat']
+        subcats = set(data['subcat'] + [0])
+        sortby = data['sortby']
         # print(data)
-        # return Document.objects.all()
-        tmp  =None
+        try:
+            if sortby != '':
+                tmp = Document.objects.order_by(sortby)
+            else:
+                tmp = Document.objects.all() 
+        except BaseException:
+            tmp = Document.objects.all() 
+
         if len(domains) != 0:
-            tmp = Document.objects.filter(_domain__in  = domains)
-        if len(cats) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_category__in  = cats)
-            else:
-                tmp = (tmp & Document.objects.filter(_category__in  = cats))
-        if len(years) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_year__in  = years)
-            else:
-                tmp = (tmp & Document.objects.filter(_year__in  = years))
+            tmp = tmp.filter(_domain__in  = domains)
         if len(subcats) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_sub_cat__in  = subcats)
-            else:
-                tmp = (tmp & Document.objects.filter(_sub_cat__in  = subcats))
+            tmp = tmp.filter(_sub_cat__in  = subcats)
+        if len(cats) != 0:
+            tmp = tmp.filter(_category__in  = cats)
+        if len(years) != 0:
+            tmp = tmp.filter(_year__in  = years)
+        
         if len(types) != 0:
-            if tmp is None:
-                tmp = Document.objects.filter(_type__in  = types)
-            else:
-                tmp = (tmp & Document.objects.filter(_type__in  = types))
+            tmp = tmp.filter(_type__in  = types)
         
         print(tmp)
         #keys
-        if tmp is None:
-            tmp = Document.objects.all()
         current = tmp
         
         
@@ -198,10 +187,10 @@ class StudentStatsListing(generics.ListAPIView):
                 except BaseException as e:
                     res = restmp
                     print(e)
-             
+        print(current, res)
         if res is None:
-            return User.objects.filter(id__in = current.filter(_verified=True).only('_user').distinct().values('_user'))
-        return User.objects.filter(id__in = res.filter(_verified=True).only('_user').distinct().values('_user'))
+            return User.objects.filter(id__in = [i['_user__user__id'] for i in current.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()])
+        return User.objects.filter(id__in = [i['_user__user__id'] for i in res.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()])
 
 
 class CurrentStudentList(generics.ListAPIView):
