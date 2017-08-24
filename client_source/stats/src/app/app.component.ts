@@ -53,6 +53,14 @@ const doc_sub_cat_choice = {
     ]
 }
 
+const sort_options = [
+  ['_title', 'Achievement title'],
+  ['_user__user__username',  'USN'],
+  ['_created_at', 'Upload date'],
+  ['_event_time', 'Event date'],
+  ['_place', 'Event Place']
+]
+
 
 @Component({
   selector: 'my-root',
@@ -65,6 +73,7 @@ export class AppComponent implements OnInit , OnDestroy{
   doc_cats = doc_category_choice;
   doc_sub_cats = doc_sub_cat_choice;
   doc_year = doc_year_choice;
+  doc_sort_options = sort_options;
   type_query = new Set()
   myresult:number = 0;
   ngOnDestroy(){
@@ -123,6 +132,7 @@ export class AppComponent implements OnInit , OnDestroy{
     this._aps.years = new Set()
   }
   getArray(e:Set<any>){
+    if(!e) return []  
     var tmp = []
     e.forEach(e=>{
       tmp.push(e)
@@ -152,7 +162,7 @@ export class AppComponent implements OnInit , OnDestroy{
     console.log(keys, domains, cats, years, subcats,types)
     // if(true == true)return;
     if(this._aps.myresult == 1)
-    this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats), true).subscribe(e=>{
+    this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats),this._aps.sortby, true).subscribe(e=>{
       console.log(e.json())
        var t  =e.json()
        this._aps.students = []
@@ -163,7 +173,7 @@ export class AppComponent implements OnInit , OnDestroy{
       this._aps.scount = t.count
     })
     else{
-      this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats)).subscribe(e=>{
+      this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats),this._aps.sortby).subscribe(e=>{
       console.log(e.json())
        var t  =e.json()
        this._aps.docs = []
@@ -189,6 +199,7 @@ export class AppComponent implements OnInit , OnDestroy{
      console.log("error", e)
    })
   }
+
 loadMores(link){
    this._aps.loadMore(link).subscribe(e=>{
       var t  =e.json()
@@ -210,6 +221,7 @@ loadMores(link){
     else
       this._aps.domain_query = new Set()
   }
+  
   domain_query = new Set()
   addDomain(e, domain){
     
@@ -288,6 +300,9 @@ loadMores(link){
     }
   }
    addSubCategory(e, cat, subcat){
+     if(!this._aps.sub_cat_query[cat]){
+       this._aps.sub_cat_query[cat] = new Set()
+     }
     if(e.checked == true)
       this._aps.sub_cat_query[cat].add(subcat)
     else
@@ -314,11 +329,11 @@ loadMores(link){
   // this.navinfo =         this._aps.navinfo
   // this.type_query =      this._aps.type_query
   // this.myresult=         this._aps.myresult
-    if(this.sub_cat_query == null){
-        this.doc_cats.forEach(e=>{
-      this._aps.sub_cat_query[e[0]] = new Set()
-    })
-    }
+    // if(this._aps.sub_cat_query == {}){
+    //     this.doc_cats.forEach(e=>{
+    //   this._aps.sub_cat_query[e[0]] = new Set()
+    // })
+    // }
   }
  
 }
