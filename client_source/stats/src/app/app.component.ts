@@ -335,5 +335,17 @@ loadMores(link){
     // })
     // }
   }
- 
+  download(){
+    this._aps.loadMore('/api/stats/getpdf').subscribe(e=>{
+      // console.log()
+      this.downloadFile((<any>e)._body)
+    }
+    )
+  }
+  downloadFile(data){
+  var blob = new Blob([data], { type: 'application/pdf' });
+
+  var url= window.URL.createObjectURL(blob);
+  window.open(url,'_blank')
 }
+} 
