@@ -107,7 +107,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                 span {{ year }}
                 md-icon close 
         md-card-actions(style="display:flex;flex-direction:row-reverse")
-            button(md-button, (click)="clear()") clear all searches  
+            button(md-button, (click)="clear()") clear
             button(md-button, (click)="search()") search
                 md-icon search
             
@@ -154,8 +154,12 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
         
         div(style="height:100px")
     md-list(class="dc",*ngIf="_aps.myresult == 1")
+        
         h4(md-subheader,style="color:white") Students
-        h3(md-subheader,style="color:white") Total results : {{ _aps.scount }}
+        div(style="display:flex;justify-content:space-between;padding:5px")
+            h3(md-subheader,style="color:white") Total results : {{ _aps.scount }}
+            button(md-raised-button,style="color:black",(click)="download()") Download PDF
+                md-icon file_download
         md-list-item(*ngFor="let student of _aps.students",class="doc")
             md-icon(md-list-icon) cloud_download
             //- md-icon(md-list-icon) insert_drive_file
