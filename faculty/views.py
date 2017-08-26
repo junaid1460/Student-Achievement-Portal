@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from database.models import VerifiedDoc
 import json
 # Create your views here.
+from random import shuffle
 class StudentListView(generics.ListAPIView):
     serializer_class = StudentSerializer
     def get_queryset(self):
@@ -15,7 +16,7 @@ class StudentListView(generics.ListAPIView):
         x = tmp.only('_user__user__id').distinct().values('_user__user__id')
         
       
-        return User.objects.filter(id__in  = x)
+        return User.objects.filter(id__in  = x).order_by('?')
 
 class StudentDocumentListView(generics.ListAPIView):
     serializer_class = DocumentSerializer
