@@ -1,11 +1,20 @@
 md-sidenav-container(style="height:100vh;")
     md-sidenav(opened="true", style="width:350px;background:#3F51B5", mode="side")
         input(type="file", style="display:none", #file, accept=".csv",(change)="upload($event)")
+        input(type="file", style="display:none", #dfile, accept=".csv",(change)="upload($event)")
         md-nav-list(class="options")
-            md-list-item((click)="file.click()") Load CSV
+            md-list-item((click)="file.click()") Create Accounts, CSV [choose file]
+            md-list-item((click)="dfile.click()") Delete Accounts, CSV [choose file]
+            md-list-item() Create an account
+            
              
     md-toolbar
-        span Admin
+        div(style="display:flex;justify-content:space-between;width:100%;")
+            span Admin
+            div
+                a(md-raised-button, href="/django-admin") Django Admin page
+                a(md-raised-button, href="/logout") log out
+
 
 
 
