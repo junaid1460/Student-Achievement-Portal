@@ -1,58 +1,67 @@
 
-<div style="width:40vw;">
+<div style="width:71vw;">
   <h2 md-dialog-title>Upload new Document?</h2>
-  <md-dialog-content>
+  <md-dialog-content class="xcontent" style="display:flex;flex-direction:row;height:73vh;max-height:100vh;justify-content:space-around;">
     <md-list class="ulist">
-      <md-list-item class="pad">
+      <div class="document">
+        <p md-subheader>Scanned document</p>
+        <input type="file" style="width:100%;" #file>
+      </div>
+      <div>
+        <md-radio-group [(ngModel)]="_type">
+          <p md-subheader>What kind of file is this?</p>
+          <md-radio-button style="margin:10px;" *ngFor="let e of doc_types" [value]="e[0]" [checked]="e[0] == 1">{{e[1]}}</md-radio-button>
+        </md-radio-group>
+      </div>
+      <div>
         <md-input-container style="width:100%;">
-          <input mdInput placeholder="Title" [(ngModel)]="_title" #title [formControl]="required">
+          <input mdInput placeholder="What is the event name?" [(ngModel)]="_title" #title [formControl]="required">
           <md-error *ngIf="required.hasError('required')">Title is required</md-error>
         </md-input-container>
-      </md-list-item>
-      <md-list-item class="pad">
+      </div>
+      <div>
         <md-input-container style="width:100%;">
-          <input mdInput placeholder="Location/place" [(ngModel)]="_place" #place [formControl]="prequired">
+          <input mdInput placeholder="Where event held?" [(ngModel)]="_place" #place [formControl]="prequired">
           <md-error *ngIf="prequired.hasError('required')"> Event location is required</md-error>
         </md-input-container>
-      </md-list-item>
-      <md-list-item>
-        <input type="file" style="width:100%;" #file>
-      </md-list-item>
-      <md-list-item>
-        <md-select placeholder="Domain" [(ngModel)]="_domain" [formControl]="drequired">
-          <md-option value="Local">Local</md-option>
-          <md-option value="National">National</md-option>
-          <md-option value="International">International</md-option>
-        </md-select><br>
-        <md-error *ngIf="drequired.hasError('required')" style="padding-left:10px;">  Select domain please</md-error>
-      </md-list-item>
-      <md-list-item>
-        <md-select placeholder="Category" [(ngModel)]="_cat" [formControl]="crequired">
-          <md-option value="Academic">Academic</md-option>
-          <md-option value="Cultural">Cultural</md-option>
-          <md-option value="Technical">Technical</md-option>
-          <md-option value="Sports">Sport</md-option>
-          <md-option value="Other">Other</md-option>
-        </md-select><br>
-        <md-error *ngIf="crequired.hasError('required')" style="padding-left:10px;">  Select Category please</md-error>
-      </md-list-item>
-      <md-list-item>
+      </div>
+      <div>
         <md-input-container style="width:100%;">
-          <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="_date" #_year_of_doc [formControl]="yorequired">
+          <input mdInput [mdDatepicker]="picker" placeholder="When? DD/MM/YYYY" [(ngModel)]="_date" #_year_of_doc [formControl]="yorequired">
           <md-error *ngIf="yorequired.hasError('required')">Date is required</md-error>
           <button mdSuffix [mdDatepickerToggle]="picker"></button>
         </md-input-container>
         <md-datepicker #picker></md-datepicker>
-      </md-list-item>
-      <md-list-item>
-        <md-select placeholder="Year" [(ngModel)]="year" [formControl]="yrequired">
-          <md-option [value]="1">1st Year</md-option>
-          <md-option [value]="2">2nd Year</md-option>
-          <md-option [value]="3">3rd Year</md-option>
-          <md-option [value]="4">4th Year</md-option>
-        </md-select><br>
-        <md-error *ngIf="yrequired.hasError('required')" style="padding-left:10px;">Select Academic year </md-error>
-      </md-list-item>
+      </div>
+    </md-list>
+    <md-list>
+      <div>
+        <p md-subheader>Academic year</p>
+        <md-radio-group class="form-radio-group" [(ngModel)]="_year">
+          <md-radio-button *ngFor="let e of doc_years" [value]="e[0]">{{e[1]}}</md-radio-button>
+        </md-radio-group>
+      </div>
+      <div>
+        <p md-subheader>Domain</p>
+        <md-radio-group class="form-radio-group" [(ngModel)]="_domain">
+          <md-radio-button *ngFor="let e of doc_domains" [value]="e[0]" [checked]="e[0] == 0">{{e[1]}}</md-radio-button>
+        </md-radio-group>
+      </div>
+    </md-list>
+    <md-list>
+      <div style="margin-top:-10px;">
+        <p md-subheader>Category</p>
+        <md-radio-group class="form-radio-group" [(ngModel)]="_cat">
+          <div *ngFor="let e of doc_cats">
+            <md-radio-button #temp [value]="e[0]">{{e[1]}}</md-radio-button>
+            <ng-template [ngIf]="doc_subs[e[0]].length&gt;0"><br>
+              <md-radio-group class="form-radio-group" style="margin-left:20px;" [disabled]="!temp.checked" [(ngModel)]="_sub_cats[e[0]]">
+                <md-radio-button *ngFor="let t of doc_subs[e[0]]" [value]="t[0]">{{t[1]}}</md-radio-button>
+              </md-radio-group>
+            </ng-template>
+          </div>
+        </md-radio-group>
+      </div>
     </md-list>
   </md-dialog-content>
   <md-dialog-actions>

@@ -1,0 +1,33 @@
+
+<md-toolbar>
+  <button md-icon-button (click)="goback()">
+    <md-icon>arrow_back</md-icon>
+  </button><span>{{user}}</span>
+</md-toolbar>
+<div class="content-main">
+  <md-list class="dc">
+    <h4 md-subheader>Files </h4>
+    <h3 md-subheader>Total results : {{ count }}</h3>
+    <md-list-item class="doc" *ngFor="let file of docs">
+      <md-icon md-list-icon>insert_drive_file</md-icon>
+      <div style="margin-left:10px;width:100%;">
+        <h4 md-line>{{file._title}}</h4>
+        <p md-line>{{ getDate(file._created_at) }}</p>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <md-chip-list style="margin:0 10px 0 0 ;">
+          <ng-template [ngIf]="!file._verified == true">
+            <md-chip style="background:#f44336;color:white;">Unverified</md-chip>
+          </ng-template>
+          <ng-template [ngIf]="file._verified == true">
+            <md-chip style="background:#4CAF50;color:white;">Verified</md-chip>
+          </ng-template>
+        </md-chip-list>
+      </div><a md-icon-button href="{{file._file}}" mdTooltip="Open" target="_blank" style="margin-right:10px;">
+        <md-icon md-icon>open_in_new</md-icon></a>
+      <button md-icon-button (click)="showInfo(file)" mdTooltip="Information">
+        <md-icon md-icon>info</md-icon>
+      </button>
+    </md-list-item>
+  </md-list>
+</div>

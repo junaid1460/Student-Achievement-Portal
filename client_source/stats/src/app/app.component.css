@@ -23,12 +23,31 @@
 .searches button{
     margin: 2px
 }
+
+.dc{
+    display: flex;
+    flex-direction: column;
+    padding: 10px
+}
 .dc .doc:nth-child(even){
     background: #e0e0e0
+    
 }
+
 
 .dc .doc{
     background: white;
-    margin: 5px;
-    border-radius: 2px;
+    margin: 0 5px;
+ 
+    max-width: 900px;
+    width:100%;
+    align-self: center;
+}
+md-input-container label {
+  color: white
+}
+
+/* When the input is focused */
+label.mat-input-placeholder {
+  color: white
 }

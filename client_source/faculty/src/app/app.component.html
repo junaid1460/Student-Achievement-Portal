@@ -1,7 +1,7 @@
 
 <md-sidenav-container style="height:100vh;">
   <md-sidenav #infonavbar #inf style="width:350px;height:auto;background:white;color:black;" mode="over" align="end">
-    <div *ngIf="navinfo!=null">
+    <ng-template [ngIf]="navinfo!=null">
       <md-list class="navlist">
         <h3 md-subheader>Information</h3>
         <md-list-item>
@@ -9,13 +9,31 @@
           <h4 md-line>{{navinfo._title}}</h4>
         </md-list-item>
         <md-list-item>
-          <p md-line md-subheader style="height:auto;font-size:12px;">Status</p>
-          <h4 *ngIf="!navinfo._verified == true" md-line>Waiting to get verified</h4>
-          <h4 *ngIf="navinfo._verified == true" md-line>Verified</h4>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Actions</p><a md-button href="{{navinfo._file}}" mdTooltip="Open" target="_blank" style="margin-right:10px;">open
+            <md-icon md-icon>open_in_new</md-icon></a>
+          <button md-button (click)="verify(navinfo.id)" mdTooltip="Verify">Verify
+            <md-icon md-icon>check_circle</md-icon>
+          </button>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Errors</p>
+          <button md-button (click)="setMessage(navinfo)" mdTooltip="This action will undo verification and it will set an error message.">Notify</button>
         </md-list-item>
         <md-list-item>
           <p md-line md-subheader style="height:auto;font-size:12px;">Uploaded on</p>
           <h4 md-line>{{ getDate(navinfo._created_at)}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Place</p>
+          <h4 md-line>{{navinfo._place}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Type</p>
+          <h4 md-line>{{navinfo._type}}</h4>
+        </md-list-item>
+        <md-list-item>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Event date</p>
+          <h4 md-line>{{getDate(navinfo._event_time)}}</h4>
         </md-list-item>
         <md-list-item>
           <p md-line md-subheader style="height:auto;font-size:12px;">Academic year</p>
@@ -30,24 +48,15 @@
           <h4 md-line>{{navinfo._category}}</h4>
         </md-list-item>
         <md-list-item>
-          <p md-line md-subheader style="height:auto;font-size:12px;">Actions</p><a md-button href="{{navinfo._file}}" mdTooltip="Open" target="_blank" style="margin-right:10px;">open
-            <md-icon md-icon>open_in_new</md-icon></a>
-          <button md-button (click)="verify(navinfo.id)" mdTooltip="Verify">Verify
-            <md-icon md-icon>check_circle</md-icon>
-          </button>
-        </md-list-item>
-        <md-list-item>
-          <p md-line md-subheader style="height:auto;font-size:12px;">Error Notifications</p>
-          <button md-button (click)="setMessage(navinfo)" mdTooltip="Verify">Notify
-            <md-icon md-icon>error</md-icon>
-          </button>
+          <p md-line md-subheader style="height:auto;font-size:12px;">Sub category</p>
+          <h4 md-line>{{navinfo._sub_cat}}</h4>
         </md-list-item>
         <md-list-item *ngIf="navinfo._has_error">
           <p md-line md-subheader style="height:auto;font-size:12px;color:red;">Error</p>
           <h4 md-line style="color:red;">{{navinfo._error_message}}</h4>
         </md-list-item>
       </md-list>
-    </div>
+    </ng-template>
   </md-sidenav>
   <md-sidenav class="sidenav" opened="true" mode="side">
     <md-nav-list class="stdlist">
