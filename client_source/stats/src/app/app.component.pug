@@ -1,5 +1,5 @@
 
-md-sidenav-container(class="sidenav",style="background: #3F51B5;")
+md-sidenav-container(class="sidenav",style="background: white;")
     md-sidenav(#infonavbar,#inf,style="width:350px;height:auto;background:white;color:black", mode="over", align="end")
         div(class="", *ngIf="_aps.navinfo!=null")
             md-list(class="navlist")
@@ -43,7 +43,7 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
     md-toolbar(style="background:#3F51B5;color:white")
         span Stats
         div(style="width:100%")
-        a(md-raised-button, href="/",style="color:black") Home
+        a(md-raised-button, href="/logout",style="color:black") log out
     md-sidenav(mode="side", opened="true", class="options",style="width:400px")
         md-list(class = "filters")
             li
@@ -90,9 +90,9 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                     li(*ngFor="let y of year_list")
                         md-checkbox((change)="addYear($event,y[1])",color="primary", [checked]="_aps.year_query.has(y[1])") {{y[0]}}
                     
-    md-card(style="margin:10px",class="searches")
+    md-card(style="margin:20px;background:#e6e6e6",class="searches")
         md-card-title 
-            md-input-container(style="width:100%")
+            md-input-container(style="width:100%", color="secondary")
                 input(mdInput,[(ngModel)]="val", placeholder="search", (keydown)="check($event)")
                 button(mdSuffix, md-icon-button, (click)="search()")
                     md-icon search
@@ -115,14 +115,14 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
                 md-option([value] = "0") Documents
                 md-option([value] = "1") Students 
             //- span(md-subheader,style="margin: 7px;color: #607D8B;") Show what?
-            md-select([(ngModel)]="_aps.sortby",placeholder="Sort By", style="margin:5px;margin-top:15px" )
+            md-select([(ngModel)]="_aps.sortby",placeholder="Sort By", style="margin:5px;margin-top:15px",(change)="change()" )
                 md-option(*ngFor="let opt of doc_sort_options", [value]="opt[0]") {{opt[1]}}
                 
             
 
     md-list(class="dc",*ngIf="_aps.myresult == 0")
-        h4(md-subheader,style="color:white") Files 
-        h3(md-subheader,style="color:white") Total results : {{ _aps.count }}
+        h4(md-subheader,) Files 
+        h3(md-subheader) Total results : {{ _aps.count }}
         
         md-list-item(*ngFor="let file of _aps.docs",class="doc")
             md-icon(md-list-icon) insert_drive_file
@@ -155,9 +155,9 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
         div(style="height:100px")
     md-list(class="dc",*ngIf="_aps.myresult == 1")
         
-        h4(md-subheader,style="color:white") Students
+        h4(md-subheader,) Students
         div(style="display:flex;justify-content:space-between;padding:5px")
-            h3(md-subheader,style="color:white") Total results : {{ _aps.scount }}
+            h3(md-subheader,) Total results : {{ _aps.scount }}
             button(md-raised-button,style="color:black",(click)="download()") Download PDF
                 md-icon file_download
         md-list-item(*ngFor="let student of _aps.students",class="doc")
@@ -183,3 +183,6 @@ md-sidenav-container(class="sidenav",style="background: #3F51B5;")
             button(md-raised-button, *ngIf="_aps.snextpage != null", (click)="loadMores(_aps.snextpage)") load more
                 md-icon cloud_download
 
+div(style="position:fixed;bottom:0;right:0;margin:40px")
+    button(md-fab, *ngIf="changed",(click)="search()",color="primary")
+        md-icon search
