@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core'
-import {Http, URLSearchParams, Headers} from '@angular/http'
+import {Http, URLSearchParams, Headers, ResponseContentType} from '@angular/http'
 
 @Injectable()
-export class AppService {
+export class AppService  {
     docs = []
     nextpage = null
     count = 0;
@@ -22,12 +22,17 @@ export class AppService {
     myresult:number = 0
     old_header:Headers;
     sortby:string;
-    constructor(private _http:Http){}
+    constructor(private _http:Http){
+    
+    }
+  
+   
     getDocs(keys, domains, cats, years, type, subcat, sortby, student = false ){
         var  link = '/api/stats/search?format=json';
         if(student == true){
             link = '/api/stats/searchstudent?format=json';
         }
+        
         var tmp = new URLSearchParams()
         let headers = new Headers({
             'Content-Type': 'application/json',
@@ -53,6 +58,9 @@ export class AppService {
     } 
     loadMore(link){
         return this._http.get(link,{ headers:this.old_header})
+    }
+    loadPDF(link){
+        return this._http.get(link,{ headers:this.old_header, responseType:ResponseContentType.Blob})
     }
     getDataWithFilter(header:Headers){
         console.log(header)
