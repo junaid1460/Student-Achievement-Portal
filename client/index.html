@@ -1,28 +1,51 @@
 <html>
     <head>
         <style>
+            *{
+                margin: 0;
+                padding: 0;
+                font-family: arial
+            }
             .login-div{
-                width: 400px;
-                height:200px;
                 background: white;
+                    padding: 30px;
+    border-radius: 2px;
+        box-shadow: 0 9px 65px black;
             }
             body{
+                position: absolute;
+                top:0;
+                left:0;
+                bottom: 0;
+                right: 0;
                 display: flex;
                 align-content: center;
                 align-items: center;
                 justify-content: center;
-                background: gray;
+                background: #3F51B5;
             }
             .fields{
                 display: flex;
                 width:100%;
-                justify-content: center;
-                align-items: center;
-                padding-top: 30px;
+                justify-content: flex-start;
+                align-items: flex-start;
+                    padding: 12px 0;
+                flex-direction: column;
+            }
+            .fields input{
+                    border-radius: 3px;
+                    border: 1px solid gray
             }
             .text-field{
                 padding: 5px;
-                font-size: 14px;
+                font-size: 18px;
+                width:100%;
+                
+            }
+            .submit-button{
+                align-self: center;
+                width:100%;
+                padding: 10px
             }
             
             </style>
@@ -32,13 +55,15 @@
         <div class = "login-div">
             {% csrf_token %}
             <div class="fields">
-                <input class="text-field" type = "text" name = "username"/>
+                <label for="username" >USN</label>
+                <input id="username" class="text-field" type = "text" name = "username"/>
             </div>
             <div class="fields">
-                <input  class="text-field"  type = "text" name = "password" />
+                <label for="password" >Password</label>
+                <input id="password" class="text-field"  type = "password" name = "password" />
             </div>
             <div class="fields">
-                <input class="submit-button" value="Login" type = "submit" name = "login" />
+                <input  class="submit-button" value="Login" type = "submit" name = "login" />
             </div>
         </div>
         </form>
