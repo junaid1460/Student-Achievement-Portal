@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.conf.urls.static import static, serve
 from django.contrib import admin as djangoadmin
-from .views import home, log_out, change_pass, make_pdf, admin, addUsers, getUserJson
+from .views import home, log_out, change_pass, make_pdf, admin
 from django.contrib.auth.views import login
 from student import urls as student_urls
 from faculty import urls as faculty_urls
@@ -24,28 +24,39 @@ from stats import urls as stats_urls
 from stats.views import stats_view
 from decorator_include import decorator_include
 from django.http import JsonResponse, Http404
-
+from myadmin import urls as admin_urls
 
 def student_required(function):
     def wrapper(request, *args, **kw):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated()  or request.user.is_staff:
             if request.user.extended.type != 'S':
-                return JsonResponse({})
+                raise Http404
             else:
                 return function(request, *args, **kw)
         else:
-            return JsonResponse({})
+            raise Http404
     return wrapper
 
 def faculty_required(function):
     def wrapper(request, *args, **kw):
-        if request.user.is_authenticated():
-            if request.user.extended.type != 'F':
-                return JsonResponse({})
+        if request.user.is_authenticated() or request.user.is_staff:
+            if request.user.extended.type != 'F' :
+                raise Http404
             else:
                 return function(request, *args, **kw)
         else:
-            return JsonResponse({})
+            raise Http404
+    return wrapper
+
+def staff_required(function):
+    def wrapper(request, *args, **kw):
+        if request.user.is_authenticated():
+            if not request.user.is_staff:
+                raise Http404
+            else:
+                return function(request, *args, **kw)
+        else:
+            raise Http404
     return wrapper
 
 def superuser_required(function):
@@ -56,7 +67,7 @@ def superuser_required(function):
             else:
                 return function(request, *args, **kw)
         else:
-            return JsonResponse({})
+            raise Http404
     return wrapper
 
 
@@ -64,14 +75,13 @@ def superuser_required(function):
 urlpatterns = [
     url(r'^admin/', admin),
     url(r'^django-admin/', decorator_include(superuser_required,djangoadmin.site.urls)),
-    url(r'^api/admin/addusers', addUsers),
-    url(r'^api/admin/getjson', getUserJson),
+    url(r'^api/admin/', decorator_include(superuser_required,admin_urls )),
     url(r'^$',home),
     url(r'^logout/$', log_out),
     url(r'^api/student/', decorator_include(student_required, include(student_urls))),
     url(r'^stats/', stats_view),
     url(r'^api/faculty/', decorator_include(faculty_required, include(faculty_urls))),
-    url(r'^api/stats/', decorator_include(superuser_required,include(stats_urls))),
+    url(r'^api/stats/', decorator_include(staff_required,include(stats_urls))),
     url(r'^password$',change_pass, name='change password'),
 
     url(r'^api/student/certificate$',make_pdf, name='Certificate'),
