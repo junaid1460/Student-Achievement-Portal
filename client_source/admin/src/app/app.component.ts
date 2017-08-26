@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import {AppService} from './app.service'
+import {AppService} from './app.service';
+import { MdSnackBar} from '@angular/material'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private _aps:AppService){}
+  constructor(private _aps:AppService, private snk:MdSnackBar){}
   title = 'app';
   records = [];
   file = null;
@@ -26,9 +27,16 @@ export class AppComponent {
     if(this.file != null){
       this._aps.uploadCSV(this.file).subscribe(
         e=>{
-          console.log(e)
+          this.snk.open('Successfully created accounts',"okay", {duration: 1000});
+        },
+        e=>{
+          this.snk.open('Something went wrong',"retry", {duration: 4000}).onAction().subscribe(()=>{
+            this.uploadCSV();
+          })
         }
       )
     }
   }
+
+
 }
