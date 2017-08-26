@@ -11,7 +11,9 @@ def home(request):
     print("hello")
     print(request.user)
     if request.user.is_staff and request.user.is_superuser:
-        return redirect('/django-admin')
+        return redirect('/admin')
+    if request.user.is_staff:
+        return redirect('/stats')
     if not request.user.is_authenticated :
         #login and verification
         if request.method == 'POST':
@@ -82,6 +84,7 @@ def new_user(username, email, password, faculty = False, fname = '', lname = '')
         ext = Extended(user = user, type = 'F' if faculty else 'S')
         ext.save()
 
+
     else:
         try:
             ext = Extended(user = user, type = 'F' if faculty else 'S')
@@ -89,6 +92,20 @@ def new_user(username, email, password, faculty = False, fname = '', lname = '')
         except BaseException:
             pass
         print("User exist")
+        return False
+
+
+def new_coordinator(username, password):
+    try:
+        user = User.objects.get(username = username)
+    except User.DoesNotExist:
+        user = None
+    if user is None:
+        user = User.objects.create_user(username , email= None, password= password)
+        user.is_staff = True
+        user.save()
+    else:
+        print("Coordinator account exist.")
         return False
 
 
@@ -103,26 +120,4 @@ def admin(req):
     if req.user.is_authenticated() and req.user.is_superuser:
         return render(req, defaults.admin_template, {})
     raise Http404
-import pandas as pd
-from io import StringIO
 
-def addUsers(req):
-    if not req.user.is_authenticated() or not req.user.is_superuser:
-        raise Http404
-    data = pd.read_csv(StringIO(req.FILES['_file'].read().decode('utf-8')))
-    for row in data.iterrows():
-        new_user(username = row[1]['username'], 
-            email = row[1]['email'], password = row[1]['username'],
-            faculty = row[1]['is_faculty'],fname = row[1]['first_name'],
-            lname = row[1]['last_name'])
-        print(row[1]['username'])
-    # for index, row in data.iterrows():
-    #     print(row)
-    #     print()
-    return JsonResponse({})
-
-def getUserJson(req):
-    if not req.user.is_authenticated() or not req.user.is_superuser:
-        raise Http404
-    data = pd.read_csv(StringIO(req.FILES['_file'].read().decode('utf-8')))
-    return  HttpResponse(data.to_json(orient='records'))
