@@ -86,6 +86,7 @@ export class AppComponent implements OnInit , OnDestroy{
     else
       this._aps.type_query.delete(domain)
     console.log(this._aps.type_query)
+    this.change();
     
   }
 
@@ -96,6 +97,8 @@ export class AppComponent implements OnInit , OnDestroy{
       })
     }
     else this._aps.type_query = new Set()
+    this.change();
+      
   }
    cdoc_id = null;
   navinfo = null;
@@ -104,10 +107,16 @@ export class AppComponent implements OnInit , OnDestroy{
     this._aps.navinfo = file
     this.nav.open()
   }
-  constructor(private _aps:AppService){
+  constructor(public _aps:AppService){
     this.result='Files';
     this.search()
     // console.log(window.location.pathname = "/stats")
+    window.onkeypress = (e) => {
+      var key = e.which || e.keyCode
+      if(key == 13){
+        this.search()
+      }
+    }
   }
   show_overlay = true
   result = "Files"
@@ -126,6 +135,8 @@ export class AppComponent implements OnInit , OnDestroy{
     else
       this._aps.usns.add(this.val.toLocaleUpperCase())
     this.val = ""
+    this.change();
+    
     }
   clear(){
     this._aps.usns = new Set()
@@ -171,6 +182,7 @@ export class AppComponent implements OnInit , OnDestroy{
       })
       this._aps.snextpage = t.next
       this._aps.scount = t.count
+      this.changed = false
     })
     else{
       this._aps.getDocs(keys, domains, cats, years, types, this.getArray(subcats),this._aps.sortby).subscribe(e=>{
@@ -182,6 +194,7 @@ export class AppComponent implements OnInit , OnDestroy{
       })
       this._aps.nextpage = t.next
       this._aps.count = t.count
+      this.changed = false
     })
     }
   }
@@ -220,6 +233,8 @@ loadMores(link){
       })
     else
       this._aps.domain_query = new Set()
+    this.change();
+    
   }
   
   domain_query = new Set()
@@ -230,6 +245,7 @@ loadMores(link){
     else
       this._aps.domain_query.delete(domain)
     console.log(this._aps.domain_query)
+    this.change();
     
   }
 
@@ -249,6 +265,8 @@ loadMores(link){
       })
     else
       this._aps.cat_query = new Set()
+    this.change();
+    
   }
   sub_cat_query = {};
   tmp_squery = {}
@@ -261,6 +279,8 @@ loadMores(link){
         this._aps.sub_cat_query[cat].add(e[0])
       })
     }else this._aps.sub_cat_query[cat] = new Set()
+    this.change();
+    
   }
   doc_type = ['Participation', 'Achievement']
   cat_query = new Set()
@@ -274,6 +294,8 @@ loadMores(link){
       this._aps.cat_query.delete(cat);
     }
     console.log(this._aps.cat_query)
+    this.change();
+    
   }
   year_list = [['1st year', 1], ['2nd year', 2],['3rd year', 3], ['4th year', 4]]
   year_query = new Set()
@@ -283,6 +305,8 @@ loadMores(link){
     else
       this._aps.year_query.delete(year)
     console.log(this._aps.year_query)
+    this.change();
+    
   }
 
   toggleAllYears(){
@@ -292,11 +316,12 @@ loadMores(link){
       })
 
     }else this._aps.year_query = new Set()
+    this.change();
+    
   }
   check($event){
     if($event.keyCode == 13){
       this.addVal()
-      this.search()
     }
   }
    addSubCategory(e, cat, subcat){
@@ -308,44 +333,26 @@ loadMores(link){
     else
       this._aps.sub_cat_query[cat].delete(subcat)
     // console.log(this.cat_query)
+    this.change();
   }
   ngOnInit(){
-
-  // console.log(this.sub_cat_query)
-  // this.docs =            this._aps.docs
-  // this.nextpage =        this._aps.nextpage
-  // this.count =           this._aps.count
-  // this.students =        this._aps.students
-  // this.snextpage =       this._aps.snextpage
-  // this.scount =          this._aps.scount
-  // this.domain_query =    this._aps.domain_query
-  // this.sub_cat_query =   this._aps.sub_cat_query;
-  // this.tmp_squery =      this._aps.tmp_squery
-  // this.cat_query =       this._aps.cat_query
-  // this.year_query =      this._aps.year_query
-  // this.usns =            this._aps.usns
-  // this.years =           this._aps.years
-  // this.cdoc_id =         this._aps.cdoc_id
-  // this.navinfo =         this._aps.navinfo
-  // this.type_query =      this._aps.type_query
-  // this.myresult=         this._aps.myresult
-    // if(this._aps.sub_cat_query == {}){
-    //     this.doc_cats.forEach(e=>{
-    //   this._aps.sub_cat_query[e[0]] = new Set()
-    // })
-    // }
   }
+
   download(){
-    this._aps.loadMore('/api/stats/getpdf').subscribe(e=>{
-      // console.log()
-      this.downloadFile((<any>e)._body)
-    }
-    )
+    this._aps.loadPDF('/api/stats/getpdf').subscribe(e=>{
+        this.downloadFile(e.blob())
+    })
+  }
+
+  changed:boolean = false;
+  change(){
+    this.changed = true
   }
   downloadFile(data){
   var blob = new Blob([data], { type: 'application/pdf' });
 
   var url= window.URL.createObjectURL(blob);
   window.open(url,'_blank')
+  
 }
 } 
