@@ -42,7 +42,7 @@ const doc_sub_cat_choice = {
         [2, 'Conferences'],
         [3, 'Projects'],
         [4, 'Competitions'],
-        [0, 'Other']
+        [9, 'Other']
     ],
     1:[
         [5, 'Add-on courses'],
@@ -114,6 +114,7 @@ export class AppComponent implements OnInit , OnDestroy{
     window.onkeypress = (e) => {
       var key = e.which || e.keyCode
       if(key == 13){
+        if(this.changed)
         this.search()
       }
     }
@@ -141,6 +142,7 @@ export class AppComponent implements OnInit , OnDestroy{
   clear(){
     this._aps.usns = new Set()
     this._aps.years = new Set()
+    this.change()
   }
   getArray(e:Set<any>){
     if(!e) return []  
@@ -272,6 +274,7 @@ loadMores(link){
   tmp_squery = {}
   toggleSubCategory(cat){
     if(!this._aps.sub_cat_query[cat]){
+      this._aps.sub_cat_query[cat] = new Set()
       console.log(cat,this._aps.sub_cat_query[cat])
     }
     if(this._aps.sub_cat_query[cat].size == 0){
