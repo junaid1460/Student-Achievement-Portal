@@ -56,69 +56,71 @@
     <div style="width:100%;"></div><a md-raised-button href="/logout" style="color:black;">log out</a>
   </md-toolbar>
   <md-sidenav class="options" mode="side" opened="true" style="width:400px;">
-    <md-list class="filters">
-      <li>
-        <h4>Filters</h4>
-      </li>
-      <li>
-        <p md-subheader>Type
-          <button md-button style="position:absolute;right:0;" (click)="toggleAllTypes()"><span>toggle</span>
-            <md-icon>done</md-icon>
-          </button>
-        </p>
-        <ul class="filter-options">
-          <li *ngFor="let d of doc_types">
-            <md-checkbox (change)="addType($event, d[0])" [checked]="_aps.type_query.has(d[0])" color="primary">{{d[1]}}</md-checkbox>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <p md-subheader>Domain
-          <button md-button style="position:absolute;right:0;" (click)="toggleAllDomain()"><span>toggle</span>
-            <md-icon>done</md-icon>
-          </button>
-        </p>
-        <ul class="filter-options">
-          <li *ngFor="let d of doc_domains">
-            <md-checkbox (change)="addDomain($event, d[0])" [checked]="_aps.domain_query.has(d[0])" color="primary">{{d[1]}}</md-checkbox>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <p md-subheader>Category
-          <button md-button style="position:absolute;right:0;" (click)="toggleAllCategory()"><span>toggle</span>
-            <md-icon>done</md-icon>
-          </button>
-        </p>
-        <ul class="filter-options">
-          <li *ngFor="let c of doc_cats">
-            <md-checkbox #x [checked]="_aps.cat_query.has(c[0])" (change)="addCategory($event, c[0],x)" color="primary">{{c[1]}}</md-checkbox>
-            <div *ngIf="doc_sub_cats[c[0]].length != 0" style="margin-left:20px;">
-              <p md-subheader>Options
-                <button [disabled]="!x.checked" md-button style="position:absolute;right:0;" (click)="toggleSubCategory(c[0])"><span>toggle</span>
-                  <md-icon>done</md-icon>
-                </button>
-              </p>
-              <li *ngFor="let sub of doc_sub_cats[c[0]]"> 
-                <md-checkbox [disabled]="!x.checked" (change)="addSubCategory($event,c[0],sub[0])" [checked]="_aps.sub_cat_query[c[0]] &amp;&amp; _aps.sub_cat_query[c[0]].has(sub[0])" color="primary">{{sub[1]}}</md-checkbox>
-              </li>
-            </div>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <p md-subheader>Academic Year
-          <button md-button style="position:absolute;right:0;" (click)="toggleAllYears()"><span>toggle</span>
-            <md-icon>done</md-icon>
-          </button>
-        </p>
-        <ul class="filter-options">
-          <li *ngFor="let y of year_list">
-            <md-checkbox (change)="addYear($event,y[1])" color="primary" [checked]="_aps.year_query.has(y[1])">{{y[0]}}</md-checkbox>
-          </li>
-        </ul>
-      </li>
-    </md-list>
+    <div style="padding:25px;">
+      <md-list class="filters">
+        <li>
+          <h4>Filters</h4>
+        </li>
+        <li>
+          <p md-subheader>Type
+            <button md-button style="position:absolute;right:0;" (click)="toggleAllTypes()"><span>toggle</span>
+              <md-icon>done</md-icon>
+            </button>
+          </p>
+          <ul class="filter-options">
+            <li *ngFor="let d of doc_types">
+              <md-checkbox (change)="addType($event, d[0])" [checked]="_aps.type_query.has(d[0])" color="primary">{{d[1]}}</md-checkbox>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p md-subheader>Domain
+            <button md-button style="position:absolute;right:0;" (click)="toggleAllDomain()"><span>toggle</span>
+              <md-icon>done</md-icon>
+            </button>
+          </p>
+          <ul class="filter-options">
+            <li *ngFor="let d of doc_domains">
+              <md-checkbox (change)="addDomain($event, d[0])" [checked]="_aps.domain_query.has(d[0])" color="primary">{{d[1]}}</md-checkbox>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p md-subheader>Category
+            <button md-button style="position:absolute;right:0;" (click)="toggleAllCategory()"><span>toggle</span>
+              <md-icon>done</md-icon>
+            </button>
+          </p>
+          <ul class="filter-options">
+            <li *ngFor="let c of doc_cats">
+              <md-checkbox #x [checked]="_aps.cat_query.has(c[0])" (change)="addCategory($event, c[0],x)" color="primary">{{c[1]}}</md-checkbox>
+              <div *ngIf="doc_sub_cats[c[0]].length != 0" style="margin-left:20px;">
+                <p md-subheader>Options
+                  <button [disabled]="!x.checked" md-button style="position:absolute;right:0;" (click)="toggleSubCategory(c[0])"><span>toggle</span>
+                    <md-icon>done</md-icon>
+                  </button>
+                </p>
+                <li *ngFor="let sub of doc_sub_cats[c[0]]"> 
+                  <md-checkbox [disabled]="!x.checked" (change)="addSubCategory($event,c[0],sub[0])" [checked]="_aps.sub_cat_query[c[0]] &amp;&amp; _aps.sub_cat_query[c[0]].has(sub[0])" color="primary">{{sub[1]}}</md-checkbox>
+                </li>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p md-subheader>Academic Year
+            <button md-button style="position:absolute;right:0;" (click)="toggleAllYears()"><span>toggle</span>
+              <md-icon>done</md-icon>
+            </button>
+          </p>
+          <ul class="filter-options">
+            <li *ngFor="let y of year_list">
+              <md-checkbox (change)="addYear($event,y[1])" color="primary" [checked]="_aps.year_query.has(y[1])">{{y[0]}}</md-checkbox>
+            </li>
+          </ul>
+        </li>
+      </md-list>
+    </div>
   </md-sidenav>
   <md-card class="searches" style="margin:20px;background:#e6e6e6;">
     <md-card-title> 
@@ -133,10 +135,10 @@
       </md-input-container>
     </md-card-title>
     <button md-raised-button *ngIf="_aps.usns.size == 0 &amp;&amp; _aps.years.size == 0"><span>all</span></button>
-    <button md-raised-button *ngFor="let usn of _aps.usns" (click)="_aps.usns.delete(usn)"><span>{{ usn }}</span>
+    <button md-raised-button *ngFor="let usn of _aps.usns" (click)="_aps.usns.delete(usn);change()"><span>{{ usn }}</span>
       <md-icon>close</md-icon>
     </button>
-    <button md-raised-button *ngFor="let year of _aps.years" color="primary" (click)="_aps.years.delete(year)"><span>{{ year }}</span>
+    <button md-raised-button *ngFor="let year of _aps.years" color="primary" (click)="_aps.years.delete(year);change()"><span>{{ year }}</span>
       <md-icon>close </md-icon>
     </button>
     <md-card-actions style="display:flex;flex-direction:row-reverse;">
