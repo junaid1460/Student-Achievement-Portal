@@ -49,69 +49,78 @@ class StatsListing(generics.ListAPIView):
         years = data['years']
         domains = data['domains']
         types = data['types']
-        subcats = set(data['subcat'] + [0])
+        subcats = set(data['subcat'])
         sortby = data['sortby']
         # print(data)
         # return Document.objects.all()
-        try:
-            if sortby != '':
-                tmp = Document.objects.order_by(sortby)
-            else:
-                tmp = Document.objects.all() 
-        except BaseException:
-            tmp = Document.objects.all() 
-            
+        
+        tmp = Document.objects.all() 
+        print("after sorting", len(tmp))
+        print()
         if len(domains) != 0:
             tmp = tmp.filter(_domain__in  = domains)
+        print("after domain:", len(tmp))
+        print()
         if len(subcats) != 0:
             tmp = tmp.filter(_sub_cat__in  = subcats)
+        print("after subcats:", len(tmp))
+        print()
         if len(cats) != 0:
             tmp = tmp.filter(_category__in  = cats)
+        print("after cats:", len(tmp))
+        print()
         if len(years) != 0:
             tmp = tmp.filter(_year__in  = years)
-        
+        print("after years:", len(tmp))
+        print()
         if len(types) != 0:
             tmp = tmp.filter(_type__in  = types)
-        
-        print(tmp)
+        print("after types:", len(tmp))
+        print()
+        # print(tmp)
         #keys
         current = tmp
         res = None
-        if len(keys) > 0:
+        intkeys = []
+        for k in keys:
+            try:
+                intk = int(k)
+                if intk < 6410:
+                    intkeys += [intk]
+            except BaseException:
+                pass
+        print(intkeys, keys)
+        # print(tmp.filter(_event_time__year__in = intkeys))
+        print()
+        temp = None
+        if len(keys) > 0 :
             for k in keys:
-                try:
-                    intk = int(k)
-                    if intk > 4610:
-                        intk = 1
-                    print(intk)
-                except BaseException:
-                    intk = 1
-                try:
-                    tmp = current.filter(
-                        Q(_user__user__username__iexact = k)|
-                        Q(_event_time__year__lte = intk,_event_time__year__gte = intk),
-                    )
-                except BaseException as e:
-
-                    print("myerror:",e)
-                    continue
-                restmp = res
-                try:
-                    if res == None:
-                        res = tmp
+                t = tmp.filter(_user__user__username__iexact = k)
+                if len(t) > 0:
+                    if temp == None:
+                        temp = t
                     else:
-                        if tmp.count() > 0:
-                            if res.count()> 0:
-                                res = (res | tmp).distinct()
-                            else:
-                                res = tmp
-                except BaseException as e:
-                    res = restmp
-                    print(e)
-             
-        if res is None:
-            return current.filter(_verified=True)
-        return res.filter(_verified=True)
+                        temp |= t
+            for k in intkeys:
+                t = tmp.filter(_event_time__year = k)
+                if len(t) > 0:
+                    if temp == None:
+                        temp = t
+                    else:
+                        temp |= t
+            if temp == None:
+                return []
+        else:
+            temp = tmp
+        try:
+            if sortby != '':
+                tmp = temp.order_by(sortby)
+            else:
+                tmp = temp.order_by('id')
+        except BaseException:
+            tmp = temp.order_by('id')
+
+        return tmp.filter(_verified=True)
 
 class StudentStatsListing(generics.ListAPIView):
     
@@ -121,10 +130,12 @@ class StudentStatsListing(generics.ListAPIView):
     pagination_class = StatsPaginator
     def get_queryset(self):
         # data = json.loads(self.request.body.decode('utf-8'))
+
         try:
             data = json.loads(self.request.META['HTTP_DATA'])
         except BaseException:
             return []
+
         #indexs keys, cats, years, domains
         print(data)
         keys = data['keys']
@@ -132,71 +143,78 @@ class StudentStatsListing(generics.ListAPIView):
         years = data['years']
         domains = data['domains']
         types = data['types']
-        subcats = set(data['subcat'] + [0])
+        subcats = set(data['subcat'])
         sortby = data['sortby']
         # print(data)
-        try:
-            if sortby != '':
-                tmp = Document.objects.order_by(sortby)
-            else:
-                tmp = Document.objects.all() 
-        except BaseException:
-            tmp = Document.objects.all() 
-
+        # return Document.objects.all()
+        
+        tmp = Document.objects.all() 
+        print("after sorting", len(tmp))
+        print()
         if len(domains) != 0:
             tmp = tmp.filter(_domain__in  = domains)
+        print("after domain:", len(tmp))
+        print()
         if len(subcats) != 0:
             tmp = tmp.filter(_sub_cat__in  = subcats)
+        print("after subcats:", len(tmp))
+        print()
         if len(cats) != 0:
             tmp = tmp.filter(_category__in  = cats)
+        print("after cats:", len(tmp))
+        print()
         if len(years) != 0:
             tmp = tmp.filter(_year__in  = years)
-        
+        print("after years:", len(tmp))
+        print()
         if len(types) != 0:
             tmp = tmp.filter(_type__in  = types)
-        
-        print(tmp)
+        print("after types:", len(tmp))
+        print()
+        # print(tmp)
         #keys
         current = tmp
-        
-        
-        #keys
         res = None
-        if len(keys) > 0:
+        intkeys = []
+        for k in keys:
+            try:
+                intk = int(k)
+                if intk < 6410:
+                    intkeys += [intk]
+            except BaseException:
+                pass
+        print(intkeys, keys)
+        # print(tmp.filter(_event_time__year__in = intkeys))
+        print()
+        temp = None
+        if len(keys) > 0 :
             for k in keys:
-                try:
-                    intk = int(k)
-                    if intk > 4610:
-                        intk = 1
-                    print(intk)
-                except BaseException:
-                    intk = 1
-                try:
-                    tmp = current.filter(
-                        Q(_user__user__username__iexact = k)|
-                        Q(_event_time__year__lte = intk,_event_time__year__gte = intk),
-                    )
-                except BaseException as e:
-
-                    print("myerror:",e)
-                    continue
-                restmp = res
-                try:
-                    if res == None:
-                        res = tmp
+                t = tmp.filter(_user__user__username__iexact = k)
+                if len(t) > 0:
+                    if temp == None:
+                        temp = t
                     else:
-                        if tmp.count() > 0:
-                            if res.count()> 0:
-                                res = (res | tmp).distinct()
-                            else:
-                                res = tmp
-                except BaseException as e:
-                    res = restmp
-                    print(e)
-        print(current, res)
-        if res is None:
-            return User.objects.filter(id__in = [i['_user__user__id'] for i in current.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()])
-        return User.objects.filter(id__in = [i['_user__user__id'] for i in res.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()])
+                        temp |= t
+            for k in intkeys:
+                t = tmp.filter(_event_time__year = k)
+                if len(t) > 0:
+                    if temp == None:
+                        temp = t
+                    else:
+                        temp |= t
+            if temp == None:
+                return []
+        else:
+            temp = tmp
+        try:
+            if sortby != '':
+                tmp = temp.order_by(sortby)
+            else:
+                tmp = temp.order_by('id')
+        except BaseException:
+            tmp = temp.order_by('id')
+
+        return User.objects.filter(id__in = [i['_user__user__id'] for i in tmp.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()]).order_by('username')
 
 
 class CurrentStudentList(generics.ListAPIView):
