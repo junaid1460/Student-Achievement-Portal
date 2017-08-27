@@ -3,6 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Student</title>
+  <script >
+    window.username = "{{ request.user.username }}";
+    window.user = "{{ request.user.first_name }}";
+ </script> 
   <base href="/static/student/">
   <meta name='csrf' content="{{ csrf_token }}">
   <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
