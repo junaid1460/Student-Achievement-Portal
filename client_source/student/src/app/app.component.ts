@@ -60,6 +60,8 @@ const doc_sub_cat_choice = {
   providers: [StudentService]
 })
 export class AppComponent {
+   username = (<any>window).username
+  user= (<any>window).user
   refreshing:boolean  = false;
   @ViewChild('infonavbar') infonav:MdSidenav;
   refresh(not:boolean = true){
@@ -84,7 +86,7 @@ export class AppComponent {
               private _aps:StudentService,
               private snack:MdSnackBar){
               this.refresh(false)
-              console.log(new Date("2017-08-01T14:58:55.283596Z").toDateString())
+              // console.log(this.user, this.username)
   }
   getDate(str){
     return new Date(str).toDateString()
@@ -181,6 +183,8 @@ import {FormControl, Validators} from '@angular/forms'
   styleUrls:['./upload.component.css']
 })
 export class UploadDialog {
+  usernname = (<any>window).username
+  user= (<any>window).username
   doc_types = doc_type_choce
   doc_cats = doc_category_choice
   doc_subs = doc_sub_cat_choice
