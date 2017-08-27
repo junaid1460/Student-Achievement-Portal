@@ -40,7 +40,7 @@ const doc_sub_cat_choice = {
         [2, 'Conferences'],
         [3, 'Projects'],
         [4, 'Competitions'],
-        [0, 'Other']
+        [9, 'Other']
     ],
     1:[
         [5, 'Addon courses'],
@@ -198,13 +198,13 @@ export class UploadDialog {
   _cat:any = 0;
   _place:string;
   _type:number = 1;
-  _sub_cats:any = function(){
-    var tmp = {}
-    Object.keys(doc_sub_cat_choice).forEach(e=>{
-      tmp[e] = 0
-    })
-    return tmp;
-  }()
+  _sub_cats:any = {
+    1:0,
+    2:9,
+    3:0
+    ,4:0,
+    0:0
+  }
   uploading:boolean = false;
   required = new FormControl('',[Validators.required])
   yrequired = new FormControl('',[Validators.required])
