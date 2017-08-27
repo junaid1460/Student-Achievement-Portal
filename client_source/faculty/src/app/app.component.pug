@@ -102,7 +102,7 @@ md-sidenav-container(style="height:100vh;")
       md-list-item(*ngIf="documents.length == 0")
         div(style="display:flex;flex-direction:column;align-content: center;margin-top:100px;align-items: center;width: 100%;")
           h1(style="width:100%;text-align:center") Nothing to show
-          p() upload some documents
+          p() Choose one student
       div(style="height:100px")
 div(*ngIf="!infonavbar.opened",style="position:fixed;bottom:0;right:0;margin:30px")
   button(class="primary pback",md-fab, style="", *ngIf="verify_button", (click)="confirm_verify(checked)",  mdTooltip="Verify", mdTooltipPosition="above")
