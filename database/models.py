@@ -41,7 +41,7 @@ doc_sub_cat_choice = (
     (2, 'Conferences'),
     (3, 'Projects'),
     (4, 'Competitions'),
-    # (9, 'Other'),
+    (9, 'Other'),
     #Academic
     (5, 'Addon courses'),
     (6, 'Audit courses'),
