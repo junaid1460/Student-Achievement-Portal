@@ -1,10 +1,14 @@
 from django.db import models
 
 from django.contrib.auth.models import User
+user_choce = (
+    ('F', 'Faculty'),
+    ('S', 'Student')
+)
 
 class Extended(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    type = models.CharField(max_length=100)
+    type = models.CharField(max_length = 1, choices = user_choce )
     def __str__(self):
         return str(self.user)
 
@@ -69,16 +73,15 @@ class Document(models.Model):
     _error_message = models.CharField(max_length = 2000, default="")
     _type = models.IntegerField(choices=doc_type_choce)
     def __str__(self):
-        return self._title
-
-
+        return str(self._title)
 
 
 class VerifiedDoc(models.Model):
     _verified_by = models.ForeignKey(Extended)
-    _document = models.OneToOneField(Document)
+    _document = models.ForeignKey(Document, on_delete=models.CASCADE)
     _created_at = models.DateTimeField(auto_now_add=True)
+    #on delete method should be added
+    #on obbject delete  i have to dsete the verifiued field back to false
     def __str__(self):
-        return str(Extended.objects.get(id = self._verified_by))
-
+        return str(self._document)
  
