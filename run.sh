@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Start Gunicorn processes
+
 echo Starting Gunicorn.
 exec gunicorn achievement_portal.wsgi:application \
-    --bind 0:80 \
-    --workers 3
+    --bind 0:8000 \
+    --workers 3 
 
 # [Unit]
 # Description = making network connection up
