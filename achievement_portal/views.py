@@ -34,8 +34,8 @@ def log_out(req):
         pass
     return redirect('/')
 
-def home_get(req):
-    return render(req, defaults.unauthenticated_template , {})
+def home_get(req, context = {'error':None}):
+    return render(req, defaults.unauthenticated_template , context)
 
 def change_pass(req):
     if not req.user.is_authenticated() or req.method != 'POST':
@@ -66,7 +66,7 @@ def home_post(req):
     if user is None:
         print("user not found")
         #send some error message
-        return render(req, defaults.unauthenticated_template, {'error_message' : 'Username or Password did not match'})
+        return render(req, defaults.unauthenticated_template, {'error' : 'Username or Password did not match'})
     else:
         login(req,user)
         return redirect('/')
