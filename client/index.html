@@ -73,7 +73,7 @@
                 line-height: 40px
 
             }
-            .contributer a{
+            a{
                 text-decoration: none
             }
             .contributer{
@@ -103,13 +103,13 @@
                     padding: 11px;
     border-radius: 2px;
     background: white;
-    color: #607D8B;
+    font-size: 10pt;
             }
             </style>
     </head>
     <body>
         <div class="sidebar" style="width:400px;background:white;height:100%;">
-            <div>
+            <div style="overflow-y:auto">
             <label for="list"> Contributers </label>
             <ul id="list">
                 <li class="contributer"> 
@@ -123,8 +123,10 @@
                 
             </ul>
             </div>
-            <div style="padding:10px"> 
+            <div style="padding:10px;font-size:11pt;background:#eeeff1"> 
                 Want to see your name here? <a href="https://github.com/junaid1460/Student-Achievement-Portal" target="_blank"> Contibute</a>
+                <br/>Found a bug? or expecting any feature? create a new <a href="https://github.com/junaid1460/Student-Achievement-Portal/issues"> issue here </a>
+                <br/><span style="color:gray; font-size:10pt">use latest Firefox or Chrome to avoid font issues.</span>
             </div>
         </div>
         <div class="inner-div "style="display:flex;flex-direction:column">
@@ -158,6 +160,9 @@
             Coordinator : Raghunandan K.R.
         </div>
         </div>
+        <script>
+            document.getElementById('username').focus()
+            </script>
     </body>
 
 </html>
