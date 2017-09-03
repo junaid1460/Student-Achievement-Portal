@@ -13,12 +13,12 @@ def addUsers(req):
     data = pd.read_csv(StringIO(req.FILES['_file'].read().decode('utf-8')))
     for row in data.iterrows():
         try:
-            new_user(username = row[1]['username'], 
-                email = row[1]['email'], password = row[1]['username'],
-                faculty = row[1]['is_faculty'],fname = row[1]['first_name'],
-                lname = row[1]['last_name'])
+            new_user(username = str(row[1]['username']), 
+                email = str(row[1]['username']) + "@nmamit.in", password = str(row[1]['username']),
+                faculty = row[1]['is_faculty'] == 1,fname = str(row[1]['first_name']),
+                lname = str(row[1]['last_name']))
         except BaseException as e:
-            print(e)
+            pass
     return JsonResponse({})
 
 def removeUsers(req):
