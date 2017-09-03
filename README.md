@@ -10,6 +10,11 @@ A web portal for uploading and verifying student's achievement docs. And later d
  - `Django`
  - `DjangoRestFramework`
  - `Angular`
+
+# deployment
+ - Nginx
+ - gunicorn (Django)
+ - py2 SimpleHTTPServer (static files)
  
 # Status
  - Under development
