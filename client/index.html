@@ -1,5 +1,6 @@
 <html>
     <head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <style>
             *{
                 margin: 0;
@@ -21,7 +22,6 @@
                 display: flex;
                 align-content: center;
                 align-items: center;
-                justify-content: center;
                 background: #3F51B5;
             }
             .fields{
@@ -47,13 +47,98 @@
                 width:100%;
                 padding: 10px
             }
-            
+            .toolbar{
+                    width: 100%;
+    /* box-shadow: 54px 0px 60px black; */
+    height: 48px;
+    background: white;
+    display: flex;
+    align-items: center;
+            }
+            .inner-div{
+                    height: 100%;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+            }
+            .sidebar{
+                    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+            }
+            .sidebar label{
+                padding:10px;
+                line-height: 40px
+
+            }
+            .contributer a{
+                text-decoration: none
+            }
+            .contributer{
+             padding: 5px;
+    border: 1px solid #607D8B;
+    margin: 2px 9px;
+    border-radius: 38px;
+    box-shadow: 0 1px 3px grey;
+    display: flex;
+
+            }
+            .contributer h3{
+                font-weight: 100;
+            }
+            .contributer .icon{
+                    height: 25px;
+    width: 25px;
+    border-radius: 100px;
+    background: #3f51b5;
+    margin: 5px;
+            }
+            .design{
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                margin: 10px;
+                    padding: 11px;
+    border-radius: 2px;
+    background: white;
+    color: #607D8B;
+            }
             </style>
     </head>
     <body>
+        <div class="sidebar" style="width:400px;background:white;height:100%;">
+            <div>
+            <label for="list"> Contributers </label>
+            <ul id="list">
+                <li class="contributer"> 
+                    <div class="icon"></div>
+                    <div>
+                        <h3> Junaid </h3>
+                        <h6> <a href="http://github.com/junaid1460"> github </a></h6>
+                    </div>
+                </li>
+            
+                
+            </ul>
+            </div>
+            <div style="padding:10px"> 
+                Want to see your name here? <a href="https://github.com/junaid1460/Student-Achievement-Portal" target="_blank"> Contibute</a>
+            </div>
+        </div>
+        <div class="inner-div "style="display:flex;flex-direction:column">
+            <div class="toolbar">Student-Achievement-Portal</div>
+        <div class="inner-div">
+        
         <form method = "POST" >
         <div class = "login-div">
             {% csrf_token %}
+            {% if error != None %}
+            <span style="color:#f44336">
+                {{ error }}
+            </span>
+            {% endif %}
             <div class="fields">
                 <label for="username" >USN</label>
                 <input id="username" class="text-field" type = "text" name = "username"/>
@@ -67,6 +152,12 @@
             </div>
         </div>
         </form>
+        </div>
+        <div class="design">
+            Designer : Junaid <br/>
+            Coordinator : Raghunandan K.R.
+        </div>
+        </div>
     </body>
 
 </html>
