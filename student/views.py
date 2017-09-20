@@ -13,11 +13,11 @@ class DocumentListView(generics.ListCreateAPIView):
     serializer_class = DocumentSerializer
     parser_classes = (FormParser, MultiPartParser)
     def perform_create(self, serializer):
-        print(self.request.POST)
+        # print(self.request.POST)
         serializer.save(_user = self.request.user.extended)
         
     def get_queryset(self):
-        
+        # return documents of current user
         return Document.objects.filter(_user = self.request.user.extended)
 
 class DocumentSetView(generics.CreateAPIView):
@@ -26,10 +26,12 @@ class DocumentSetView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(_user = self.request.user.extended)
         
-
+#delete document view
 def delete(req):
+
     if req.user.is_authenticated():
         if req.method == 'POST':
+            # data is in body part of request 
             print(req.body.decode('utf-8'))
             data = json.loads(req.body.decode('utf-8'))
             print(data.get('id'))
@@ -40,14 +42,16 @@ def delete(req):
                 try:
                     doc =  Document.objects.get(pk = id)
                     print(doc)
+                    #no need to delete verifier's info since user cannot delete document once it is verified.
                     if doc._verified != True:
                         doc._file.delete(False)
                         doc.delete()
                     else:
-                        print("Document verified, cannot delete")
+                        # print("Document verified, cannot delete")
+                        pass
                 except Document.DoesNotExist:
-                    
-                    print("already deleted")
+                    pass
+                    # print("already deleted")
                     # return JsonResponse({'status':'Does not exist or Already delted. please refresh.'})
             return JsonResponse({'status':'deleted'})
         # else:
