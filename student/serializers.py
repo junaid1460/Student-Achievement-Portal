@@ -11,6 +11,11 @@ class DocumentSetSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
+    '''
+         the fields below is set serializer get method to replace contents with 
+         appropriate choice option
+    '''
+    
     _domain = serializers.SerializerMethodField()
     _category = serializers.SerializerMethodField()
     _year = serializers.SerializerMethodField()
