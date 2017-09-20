@@ -14,11 +14,13 @@ from django.views import View
 from django.http import Http404
 # Create your views here.
 
+# stats view 
 def stats_view(req):
     if not req.user.is_authenticated() or not req.user.is_staff:
         raise Http404
     return render(req, d.stats_template, {})
 
+# list of students
 class StudentView(generics.ListAPIView):
     serializer_class = DocumentSerializer
 
@@ -30,13 +32,14 @@ class StudentView(generics.ListAPIView):
                     
 
 class StatsListing(generics.ListAPIView):
+    # search class
     serializer_class = DocStatsSerializer
     filter_backends = [SearchFilter, OrderingFilter]
 
     pagination_class = StatsPaginator
     def get_queryset(self):
         # data = json.loads(self.request.body.decode('utf-8'))
-
+        # data is in HTTP header
         try:
             data = json.loads(self.request.META['HTTP_DATA'])
         except BaseException:
@@ -46,7 +49,7 @@ class StatsListing(generics.ListAPIView):
         return tmp.filter(_verified=True)
 
 class StudentStatsListing(generics.ListAPIView):
-    
+    # method for querying student list for a search
     serializer_class = StudentStatsSerializer
     filter_backends = [SearchFilter]
 
@@ -62,15 +65,17 @@ class StudentStatsListing(generics.ListAPIView):
 
         return User.objects.filter(id__in = [i['_user__user__id'] for i in tmp.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()]).order_by('username')
 
-
+# view for accessing documents of a specific user
 class CurrentStudentList(generics.ListAPIView):
     serializer_class = DocumentSerializer
     def get_queryset(self):
         
-        print(self.request.GET)
+        # print(self.request.GET)
         return Document.objects.all()
 
+# It's the main search filtering method
 def getDocs(data):
+    # <data> is a dict having filter info
     keys = data['keys']
     cats = data['cats']
     years = data['years']
@@ -81,6 +86,12 @@ def getDocs(data):
     # print(data)
     # return Document.objects.all()
     
+
+    '''
+
+        applying filters
+
+    '''
     tmp = Document.objects.all() 
     # print("after sorting", len(tmp))
     # print()
@@ -139,6 +150,8 @@ def getDocs(data):
             return t
     else:
         temp = tmp
+    
+    # sort options
     try:
         if sortby != '':
             tmp = temp.order_by(sortby)
