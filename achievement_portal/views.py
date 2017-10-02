@@ -83,15 +83,26 @@ def home_post(req):
         return redirect('/')
 
 def new_user(username, email, password, faculty = False, fname = '', lname = ''):
+    '''
+        username:string
+        email:string
+        password:string
+        faculty:boolean
+        fname:string
+        lname:string
+
+    '''
     try:
         user = User.objects.get(username = username)
     except User.DoesNotExist:
         user = None
     if user is None:
+        # create user object
         user = User.objects.create_user(username , email= email, password= password)
         user.first_name = fname
         user.last_name =  lname
         user.save()
+        # create extended object for new user object
         ext = Extended(user = user, type = 'F' if faculty else 'S')
         ext.save()
 
