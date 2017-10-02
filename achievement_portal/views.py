@@ -135,16 +135,17 @@ def new_coordinator(username, password):
         print("Coordinator account exist.")
         return False
 
-
+# ToDo
 from weasyprint import HTML
-def make_pdf(req):
+def make_pdf(req): # pdf generator (not implemented)
     html = HTML(string= render(req,defaults.certificate_template,{}).content.decode('utf-8'))
     pdf = html.write_pdf()
 
     return HttpResponse(pdf, content_type='application/pdf')
 
-def admin(req):
+def admin(req): # helper func
     if req.user.is_authenticated() and req.user.is_superuser:
         return render(req, defaults.admin_template, {})
     raise Http404
+
 
