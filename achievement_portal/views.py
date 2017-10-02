@@ -38,6 +38,12 @@ def home_get(req, context = {'error':None}):
     return render(req, defaults.unauthenticated_template , context)
 
 def change_pass(req):
+    '''
+        controller to change password
+        request.body is data source (body is bytedata decode and parse it json before access)
+        fileds : `current_password`
+                 `new_password`
+    '''
     if not req.user.is_authenticated() or req.method != 'POST':
         return JsonResponse({'status':False})
 
