@@ -118,6 +118,11 @@ def new_user(username, email, password, faculty = False, fname = '', lname = '')
 
 
 def new_coordinator(username, password):
+    '''
+        username : string
+        password : string
+        This function creates coordinator account
+    '''
     try:
         user = User.objects.get(username = username)
     except User.DoesNotExist:
