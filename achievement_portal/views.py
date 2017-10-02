@@ -66,6 +66,11 @@ def change_pass(req):
 
 
 def home_post(req):
+    '''
+        data source : request.POST
+        fileds : username
+                 password
+    '''
     username = req.POST['username']
     password = req.POST['password']
     user = authenticate(username = username, password = password)
