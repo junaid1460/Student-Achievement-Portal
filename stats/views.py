@@ -55,7 +55,6 @@ class StudentStatsListing(generics.ListAPIView):
 
     pagination_class = StatsPaginator
     def get_queryset(self):
-        # data = json.loads(self.request.body.decode('utf-8'))
 
         try:
             data = json.loads(self.request.META['HTTP_DATA'])
@@ -69,8 +68,6 @@ class StudentStatsListing(generics.ListAPIView):
 class CurrentStudentList(generics.ListAPIView):
     serializer_class = DocumentSerializer
     def get_queryset(self):
-        
-        # print(self.request.GET)
         return Document.objects.all()
 
 # It's the main search filtering method
@@ -83,40 +80,23 @@ def getDocs(data):
     types = data['types']
     subcats = set(data['subcat'])
     sortby = data['sortby']
-    # print(data)
-    # return Document.objects.all()
     
-
     '''
 
         applying filters
 
     '''
     tmp = Document.objects.all() 
-    # print("after sorting", len(tmp))
-    # print()
     if len(domains) != 0:
         tmp = tmp.filter(_domain__in  = domains)
-    # print("after domain:", len(tmp))
-    # print()
     if len(subcats) != 0:
         tmp = tmp.filter(_sub_cat__in  = subcats)
-    # print("after subcats:", len(tmp))
-    # print()
     if len(cats) != 0:
         tmp = tmp.filter(_category__in  = cats)
-    # print("after cats:", len(tmp))
-    # print()
     if len(years) != 0:
         tmp = tmp.filter(_year__in  = years)
-    # print("after years:", len(tmp))
-    # print()
     if len(types) != 0:
         tmp = tmp.filter(_type__in  = types)
-    # print("after types:", len(tmp))
-    # print()
-    # print(tmp)
-    #keys
     current = tmp
     res = None
     intkeys = []
@@ -127,9 +107,6 @@ def getDocs(data):
                 intkeys += [intk]
         except BaseException:
             pass
-    print(intkeys, keys)
-    # print(tmp.filter(_event_time__year__in = intkeys))
-    print()
     temp = None
     if len(keys) > 0 :
         for k in keys:
@@ -169,9 +146,7 @@ class PDFview(View):
             return []
 
         #indexs keys, cats, years, domains
-        # print(data)
         tmp = getDocs(data)
-       
         tmp =  User.objects.filter(id__in = [i['_user__user__id'] for i in tmp.filter(_verified=True).only('_user__user__id').values('_user__user__id').distinct()]).order_by('username')
 
         from weasyprint import HTML
