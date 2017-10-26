@@ -17,10 +17,8 @@ A web portal for uploading and verifying student's achievement docs. And later d
  - py2 SimpleHTTPServer (static files)
 
 # How to deploy for different departments?
-Do not worry. we can run different instance app in a VM for different departments and add route in nginx for a specific department. `ip/[dept name]`
- 
-# Status
- - Under development
+Do not worry. we can run multiple instances of app in a VM for different departments and add route in nginx for a specific department. `ip/[dept name]`
+
 
 # License
 
