@@ -96,8 +96,8 @@ DATABASES = {
         'NAME': 'achievement_portal',
         'USER': 'root',
         'PASSWORD': 'crook@#$',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -139,7 +139,7 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'client/static')
+STATIC_ROOT = '/var/static'
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static file,s.
@@ -150,7 +150,7 @@ STATICFILES_DIRS = [
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "client/static/media")
-MEDIA_URL = '/static/media/'
+MEDIA_ROOT =  "/var/media"
+MEDIA_URL = '/media/'
 
 
