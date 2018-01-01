@@ -1,0 +1,19 @@
+version: "2"
+services:
+  nginx:
+    image: nginx
+    volumes: [ 
+      './nginx.conf:/etc/nginx/nginx.conf',
+      './client:/var/static',
+      './client:/var/media']
+    # command: bash -c ''
+    ports: ["80:80"]
+    network_mode: "host"
+  web:
+    build: .
+
+    network_mode: "host"
+    volumes: [ 
+      './client/media:/var/media']
+    command: bash -c 'python manage.py makemigrations && python manage.py migrate && gunicorn achievement_portal.wsgi -b 127.0.0.1:5000'
+  
