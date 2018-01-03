@@ -1,0 +1,11 @@
+[Unit]
+Description = making network connection up
+After = network.target
+[Service]
+Type=oneshot
+User=${PUSER}
+Group=docker
+WorkingDirectory=${PWD}
+ExecStart = ${PWD}/${PFILE} 
+[Install]
+WantedBy = multi-user.target
