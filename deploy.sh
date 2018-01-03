@@ -7,6 +7,23 @@ then
     exit
 fi
 
+checkExistance () {
+    allok=1
+    for i in $@;do
+        if [ "$(command -v $i)" == "" ]
+        then
+            echo "$i not found!"
+            allok=0
+        fi
+    done
+    if [ $allok == 0 ]
+    then
+        exit
+    fi
+}
+
+checkExistance "mysql" "docker" "python3.5" "pip3"
+
 cd "$(dirname $0)"
 export PUSER="portal"
 sudo groupadd docker
