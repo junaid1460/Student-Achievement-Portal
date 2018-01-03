@@ -113,7 +113,7 @@ def new_user(username, email, password, faculty = False, fname = '', lname = '')
             ext.save()
         except BaseException:
             pass
-        print("User exist")
+        # print("User exist")
         return False
 
 
