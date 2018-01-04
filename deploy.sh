@@ -9,7 +9,7 @@ fi
 
 checkExistance () {
     allok=1
-    for i in $@;do
+    for i in "$@";do
         if [ "$(command -v $i)" == "" ]
         then
             echo "$i not found!"
