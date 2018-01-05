@@ -59,5 +59,3 @@ echo "killing all containers"
 echo "Running services"
 startOrRestart "$ach" &
 startOrRestart "$static" &
-
-git stash
