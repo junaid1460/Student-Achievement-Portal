@@ -12,9 +12,12 @@ A web portal for uploading and verifying students' achievement documents. The so
  - `Angular`
 
 # deployment
- - Nginx
- - gunicorn (Django)
- - py2 SimpleHTTPServer (static files)
+ - Nginx(Docker
+ - gunicorn (Django, Docker)
+ - <s>py2 SimpleHTTPServer (static files)</s>
+
+## How to deploy
+clone this repo, cd into it, then run `sudo ./deploy.sh`
 
 # How to deploy for different departments?
 Do not worry. we can run multiple instances of app in a VM for different departments and add route in nginx for a specific department. `ip/[dept name]`
